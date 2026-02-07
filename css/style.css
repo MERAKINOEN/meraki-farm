@@ -1440,6 +1440,15 @@ img {
         /* Helper for centering inline-block */
     }
 
+    /* Mobile Only / PC Only Utilities */
+    .sp-only {
+        display: block;
+    }
+
+    .pc-only {
+        display: none;
+    }
+
     /* Origin Mobile Animations Speed */
     .delay-1500 {
         transition-delay: 0.3s;
@@ -1460,4 +1469,13 @@ img {
     .delay-7500 {
         transition-delay: 1.5s;
     }
+}
+
+/* Default (PC) state for utilities */
+.sp-only {
+    display: none;
+}
+
+.pc-only {
+    display: block;
 }
