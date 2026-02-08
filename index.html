@@ -265,11 +265,19 @@
                     <h3 class="section-title">農園日誌</h3>
                 </div>
                 <!-- noteリンク -->
-                <div class="note-link-container" style="text-align: center; padding: 20px;">
-                    <p class="text-body" style="margin-bottom: 20px;">
-                        日々の農園の様子や想いは、<br>noteにて更新しています。
-                    </p>
-                    <a href="https://note.com/meraki_farm" target="_blank" class="btn-primary">noteで読む</a>
+                <!-- Article List Container -->
+                <div class="blog-grid" id="blog-list" style="margin-bottom: 40px;">
+                    <!-- JavaScript will load note articles here via RSS -->
+                    <div class="loading-blog"
+                        style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--color-text-light);">
+                        <p>noteから最新記事を読み込んでいます...</p>
+                    </div>
+                </div>
+
+                <!-- Link to Note -->
+                <div class="center-align" style="margin-top: 20px;">
+                    <a href="https://note.com/meraki_farm" target="_blank" class="btn-arrow"
+                        id="blog-view-all">noteで記事一覧を見る</a>
                 </div>
             </div>
         </section>

@@ -153,8 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Note Integration
     // ★★★★ CHANGE THIS TO YOUR NOTE ID ★★★★
-    const NOTE_ID = 'meraki_noen'; // Example valid note ID (Kitchen Nagoya) for demo. 
-    // Replace 'kitchen_nagoya' with 'meraki_farm' or your actual note ID.
+    const NOTE_ID = 'meraki_farm'; // Correct ID for Meraki Farm
     // ★★★★★★★★★★★★★★★★★★★★★★★★★★★
 
     const blogList = document.getElementById('blog-list');
