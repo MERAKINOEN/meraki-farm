@@ -61,12 +61,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('active');
+                entry.target.classList.add('is-visible');
             }
         });
     }, observerOptions);
 
-    const revealElements = document.querySelectorAll('.reveal-up, .reveal-text, .reveal-image');
+    const revealElements = document.querySelectorAll('.fade-in, .reveal-up, .reveal-text, .reveal-image');
     revealElements.forEach(el => {
         observer.observe(el);
     });
