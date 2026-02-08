@@ -1686,4 +1686,26 @@ img {
     .note-link-container p {
         text-align: center !important;
     }
+
+    /* Product Section Mobile Alignment - Force Center */
+    .product-info {
+        text-align: center !important;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .product-name {
+        text-align: center !important;
+        width: 100%;
+        display: block;
+    }
+
+    .product-card .btn-primary {
+        margin-left: auto !important;
+        margin-right: auto !important;
+        display: inline-block !important;
+        /* Ensure it behaves like a block for margin auto if needed, or inline-block grounded by text-align */
+    }
 }
