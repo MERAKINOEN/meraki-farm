@@ -167,84 +167,102 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Use a CORS proxy to fetch the RSS feed (since note blocks direct browser requests)
         // We use 'rss2json' for easier parsing (free tier)
-        // Use a CORS proxy to fetch the RSS feed (since note blocks direct browser requests)
-        // We use 'rss2json' for easier parsing (free tier)
+        // Use allorigins.win as a CORS proxy to fetch the raw RSS XML
+        // This gives us better control over parsing than rss2json
         const rssUrl = `https://note.com/${NOTE_ID}/rss?v=${new Date().getTime()}`;
-        // Add cache buster to date
-        const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(rssUrl)}`;
 
-        fetch(apiUrl)
-            .then(response => response.json())
+        fetch(proxyUrl)
+            .then(response => {
+                if (response.ok) return response.json();
+                throw new Error('Network response was not ok.');
+            })
             .then(data => {
-                if (data.status === 'ok' && data.items.length > 0) {
+                if (data.contents) {
+                    const parser = new DOMParser();
+                    const xmlDoc = parser.parseFromString(data.contents, "text/xml");
+                    const items = Array.from(xmlDoc.querySelectorAll("item")).slice(0, 3);
+
                     blogList.innerHTML = ''; // Clear loading message
 
-                    // Display up to 3 items
-                    const items = data.items.slice(0, 3);
+                    if (items.length === 0) {
+                        blogList.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">記事が見つかりませんでした。</p>';
+                        return;
+                    }
 
                     items.forEach((item, index) => {
-                        // Extract first image from content if thumbnail is missing
-                        // Extract image logic for note RSS (rss2json)
-                        let imageUrl = item.thumbnail;
+                        const title = item.querySelector("title").textContent;
+                        const link = item.querySelector("link").textContent;
+                        const pubDateText = item.querySelector("pubDate").textContent;
+                        const description = item.querySelector("description") ? item.querySelector("description").textContent : "";
+                        const contentEncoded = item.getElementsByTagName("content:encoded")[0] ? item.getElementsByTagName("content:encoded")[0].textContent : "";
 
-                        // Fallback 1: Check enclosure
-                        if (!imageUrl && item.enclosure && item.enclosure.link) {
-                            imageUrl = item.enclosure.link;
+                        // Image Extraction Logic
+                        let imageUrl = null;
+
+                        // 1. Check media:thumbnail (Standard for Note Header Image)
+                        const mediaThumbnail = item.getElementsByTagName("media:thumbnail")[0];
+                        if (mediaThumbnail) {
+                            imageUrl = mediaThumbnail.getAttribute("url") || mediaThumbnail.textContent;
                         }
 
-                        const htmlContent = (item.description || "") + (item.content || "");
-
-                        // Fallback 2: Regex for standard img tags
-                        if (!imageUrl || imageUrl === "") {
-                            const imgMatch = htmlContent.match(/<img[^>]+src=["']([^"']+)["']/i);
-                            if (imgMatch) {
-                                imageUrl = imgMatch[1];
+                        // 2. Check enclosure
+                        if (!imageUrl) {
+                            const enclosure = item.querySelector("enclosure");
+                            if (enclosure && enclosure.getAttribute("type").startsWith("image")) {
+                                imageUrl = enclosure.getAttribute("url");
                             }
                         }
 
-                        // Fallback 3: Regex for data-src
-                        if (!imageUrl || imageUrl === "") {
-                            const dataSrcMatch = htmlContent.match(/data-src=["']([^"']+)["']/i);
-                            if (dataSrcMatch) {
-                                imageUrl = dataSrcMatch[1];
+                        // 3. Regex in content:encoded (body images)
+                        if (!imageUrl && contentEncoded) {
+                            const imgMatch = contentEncoded.match(/<img[^>]+src=["']([^"']+)["']/i);
+                            if (imgMatch) imageUrl = imgMatch[1];
+
+                            if (!imageUrl) {
+                                const dataSrcMatch = contentEncoded.match(/data-src=["']([^"']+)["']/i);
+                                if (dataSrcMatch) imageUrl = dataSrcMatch[1];
                             }
                         }
 
-                        // Fallback 4: BRUTE FORCE for note specific assets
-                        // Note images usually come from assets.st-note.com
-                        if (!imageUrl || imageUrl === "") {
-                            // Find any URL containing assets.st-note.com that ends with jpg, png, or jpeg (ignoring query params)
-                            // This regex looks for https://...assets.st-note.com... .jpg/png
-                            const noteAssetMatch = htmlContent.match(/(https:\/\/assets\.st-note\.com\/[^"'\s>)]+\.(jpg|jpeg|png|gif))/i);
-                            if (noteAssetMatch) {
-                                imageUrl = noteAssetMatch[1];
-                            }
+                        // 4. Regex in description
+                        if (!imageUrl && description) {
+                            const imgMatch = description.match(/<img[^>]+src=["']([^"']+)["']/i);
+                            if (imgMatch) imageUrl = imgMatch[1];
                         }
 
-                        // Fallback 5: Default Placeholder
-                        if (!imageUrl || imageUrl === "") {
+                        // 5. Brute force specific note assets
+                        if (!imageUrl) {
+                            const combinedHtml = description + contentEncoded;
+                            const noteAssetMatch = combinedHtml.match(/(https:\/\/assets\.st-note\.com\/[^"'\s>)]+\.(jpg|jpeg|png|gif))/i);
+                            if (noteAssetMatch) imageUrl = noteAssetMatch[1];
+                        }
+
+                        // Fallback
+                        if (!imageUrl) {
                             imageUrl = 'images/concept.png';
                         }
 
                         // Format Date
-                        const dateObj = new Date(item.pubDate);
+                        const dateObj = new Date(pubDateText);
                         const dateStr = `${dateObj.getFullYear()}.${String(dateObj.getMonth() + 1).padStart(2, '0')}.${String(dateObj.getDate()).padStart(2, '0')}`;
 
-                        // Create HTML logic
+                        // Strip HTML from description for excerpt
+                        const plainDescription = description.replace(/<[^>]+>/g, '').substring(0, 60);
+
                         const delayClass = index > 0 ? `delay-${index * 200}` : '';
 
                         const articleHtml = `
                             <article class="blog-card reveal-up ${delayClass}">
-                                <a href="${item.link}" target="_blank" class="blog-link">
+                                <a href="${link}" target="_blank" class="blog-link">
                                     <div class="blog-thumb">
-                                        <img src="${imageUrl}" alt="${item.title}">
+                                        <img src="${imageUrl}" alt="${title}">
                                     </div>
                                     <div class="blog-content">
                                         <span class="blog-date">${dateStr}</span>
-                                        <h4 class="blog-card-title">${item.title}</h4>
+                                        <h4 class="blog-card-title">${title}</h4>
                                         <p class="blog-excerpt" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
-                                            <!-- Remove HTML tags for excerpt -->
-                                            ${item.description.replace(/<[^>]+>/g, '').substring(0, 60)}...
+                                            ${plainDescription}...
                                         </p>
                                         <span class="read-more">noteで読む →</span>
                                     </div>
@@ -254,12 +272,18 @@ document.addEventListener('DOMContentLoaded', () => {
                         blogList.insertAdjacentHTML('beforeend', articleHtml);
                     });
 
-                    // Trigger animations for new elements
+                    // Trigger animations
                     const newReveals = blogList.querySelectorAll('.reveal-up');
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) entry.target.classList.add('active');
+                        });
+                    }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
+
                     newReveals.forEach(el => observer.observe(el));
 
                 } else {
-                    blogList.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">記事が見つかりませんでした。</p>';
+                    blogList.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">記事の取得に失敗しました。</p>';
                 }
             })
             .catch(error => {
