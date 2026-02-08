@@ -1591,4 +1591,39 @@ img {
         justify-content: center;
         text-align: center;
     }
+
+    /* Force Blog Card Centering */
+    .blog-card {
+        text-align: center !important;
+        align-items: center !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .blog-thumb {
+        margin: 0 auto 15px auto !important;
+        /* Center image */
+    }
+
+    .blog-content {
+        text-align: center !important;
+        align-items: center !important;
+        padding: 0 10px !important;
+    }
+
+    .blog-card-title,
+    .blog-excerpt,
+    .blog-date,
+    .read-more {
+        text-align: center !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        display: block !important;
+    }
+
+    /* Note Link Container Center */
+    .note-link-container,
+    .note-link-container p {
+        text-align: center !important;
+    }
 }
