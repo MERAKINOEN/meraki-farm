@@ -65,7 +65,7 @@ img {
     transition: opacity 1s ease-out, transform 1s ease-out;
 }
 
-.fade-in.is-visible {
+.fade-in.active {
     opacity: 1;
     transform: translateY(0);
 }
