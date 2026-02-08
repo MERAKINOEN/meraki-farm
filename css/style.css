@@ -60,18 +60,16 @@ img {
 
 /* Scroll Animation Styles */
 /* Scroll Animation Styles */
-/* Scroll Animation Styles */
 .reveal-up,
 .reveal-text,
 .reveal-image,
 .fade-in {
-    /* opacity: 0;  <-- Temporarily disabled to fix visibility issue */
-    /* transform: translateY(30px); */
+    opacity: 0;
+    transform: translateY(30px);
     transition: opacity 1s ease-out, transform 1s ease-out;
+    will-change: opacity, transform;
 }
 
-/* Animations will only work if JS adds 'active' class correctly, 
-   but content will be visible by default now. */
 .reveal-up.active,
 .reveal-text.active,
 .reveal-image.active,
@@ -79,21 +77,6 @@ img {
     opacity: 1;
     transform: translateY(0);
 }
-
-/* Re-enable opacity 0 ONLY if 'js-loaded' class is present on body (optional advanced fix), 
-   but for now let's just make sure everything is visible. 
-   Actually, let's keep the animation but ensure it defaults to visible if something is wrong. */
-
-.reveal-up,
-.reveal-text,
-.reveal-image,
-.fade-in {
-    opacity: 1 !important;
-    /* EMERGENCY FIX: Force visible */
-    transform: none !important;
-}
-
-/* If we want to restore animation later, we remove the !important above */
 
 /* ==========================================================================
    Layout Utilities
