@@ -1,0 +1,330 @@
+/* ==========================================================================
+   KAWAI Inspired About Page Styles (Dark & Premium)
+   ========================================================================== */
+
+/* Variables Override for About Page Scope */
+.about-page-body {
+    background-color: #111;
+    /* Deep Black */
+    color: #f0f0f0;
+    /* Off-White */
+    font-family: 'Zen Old Mincho', serif;
+    /* Use Serif primarily */
+}
+
+/* Header Override (Make it transparent/dark) */
+.about-page-body .header {
+    background-color: rgba(17, 17, 17, 0.9) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.about-page-body .logo a,
+.about-page-body .nav-list a {
+    color: #fff !important;
+}
+
+.about-page-body .hamburger span {
+    background-color: #fff;
+}
+
+/* Hero Section (KAWAI Style) */
+.kawai-hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-image: url('../images/hero_slide_3.jpg');
+    /* Use existing dark/moody image if possible, or filter one */
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Dark Overlay */
+.kawai-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(17, 17, 17, 1));
+    /* Fade to black at bottom */
+    z-index: 1;
+}
+
+.kawai-hero-content {
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeInUp 1.5s ease-out forwards 0.5s;
+}
+
+.kawai-subtitle {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #ccc;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.kawai-title {
+    font-size: 3.5rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    margin-bottom: 40px;
+    line-height: 1.4;
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.kawai-scroll-indicator {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    opacity: 0.7;
+    animation: bounce 2s infinite;
+}
+
+.kawai-scroll-indicator span {
+    display: block;
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, #fff, transparent);
+    margin: 0 auto;
+}
+
+.kawai-scroll-text {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    margin-top: 10px;
+    text-transform: uppercase;
+}
+
+/* Content Sections (Philosophy & Story) */
+.kawai-section {
+    padding: 120px 0;
+    position: relative;
+}
+
+.kawai-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+/* Philosophy Layout (Image Left, Text Right - Asymmetrical) */
+.kawai-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+}
+
+.kawai-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    /* KAWAI style: Sharp edges, high contrast */
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.kawai-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+    filter: grayscale(30%) contrast(110%);
+    /* Moody filter */
+}
+
+.kawai-image-wrapper:hover .kawai-image {
+    transform: scale(1.05);
+    filter: grayscale(0%) contrast(100%);
+}
+
+.kawai-text-content {
+    text-align: left;
+}
+
+.kawai-heading {
+    font-size: 2.0rem;
+    margin-bottom: 40px;
+    border-left: 2px solid #bfa57d;
+    /* Gold line */
+    padding-left: 30px;
+    line-height: 1.5;
+}
+
+.kawai-paragraph {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 1.0rem;
+    line-height: 2.4;
+    color: #bbb;
+    margin-bottom: 30px;
+    font-weight: 300;
+}
+
+/* Story Section (Parallax / Center Focus) */
+.kawai-story-section {
+    background-color: #1a1a1a;
+    /* Slightly lighter black */
+    text-align: center;
+}
+
+.kawai-story-title {
+    font-size: 2.5rem;
+    margin-bottom: 60px;
+    color: #fff;
+    display: inline-block;
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.kawai-story-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 1px;
+    background-color: #bfa57d;
+}
+
+.kawai-story-text-block {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: left;
+    /* Keep text left aligned for readability */
+}
+
+/* Overview Table (Minimal Grid) */
+.kawai-overview-grid {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.kawai-overview-row {
+    display: contents;
+}
+
+.kawai-dt {
+    padding: 25px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: #bfa57d;
+    /* Gold */
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.kawai-dd {
+    padding: 25px 0 25px 40px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ddd;
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 1.0rem;
+}
+
+/* Footer CTA */
+.kawai-footer-cta {
+    padding: 100px 0;
+    text-align: center;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(17, 17, 17, 1)), url('../images/hero_slide_1.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.kawai-btn {
+    display: inline-block;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    padding: 15px 60px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.2em;
+    transition: all 0.4s ease;
+    margin-top: 30px;
+}
+
+.kawai-btn:hover {
+    background-color: #fff;
+    color: #000;
+    border-color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .kawai-title {
+        font-size: 2.2rem;
+    }
+
+    .kawai-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .kawai-section {
+        padding: 80px 0;
+    }
+
+    .kawai-heading {
+        font-size: 1.6rem;
+        padding-left: 20px;
+        margin-bottom: 30px;
+    }
+
+    .kawai-overview-grid {
+        display: block;
+    }
+
+    .kawai-dt {
+        border-bottom: none;
+        padding-bottom: 5px;
+        color: #bfa57d;
+    }
+
+    .kawai-dd {
+        padding: 0 0 25px 0;
+        margin-left: 0;
+    }
+}
+
+/* Animation Keyframes */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    40% {
+        transform: translateX(-50%) translateY(-10px);
+    }
+
+    60% {
+        transform: translateX(-50%) translateY(-5px);
+    }
+}
