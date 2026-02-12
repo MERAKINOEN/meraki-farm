@@ -121,37 +121,43 @@
     /* Text on right (start), Image on left */
     justify-content: center;
     align-items: flex-start;
-    gap: 100px;
-    height: 600px;
-    /* Fixed height container for vertical text */
+    gap: 5vw;
+    /* Responsive gap instead of fixed 100px */
+    width: 100%;
+    max-width: 100%;
 }
 
 .mjp-text-vertical {
     writing-mode: vertical-rl;
-    height: 500px;
-    line-height: 2.2;
+    height: auto;
+    min-height: 500px;
+    max-height: 80vh;
+    line-height: 2.0;
     letter-spacing: 0.1em;
     font-size: 1.1rem;
 }
 
 .mjp-text-vertical h3 {
     font-size: 2rem;
-    margin-left: 60px;
-    /* Space between title and body in vertical */
+    margin-left: 2rem;
+    /* Relative unit */
     letter-spacing: 0.2em;
     color: #333;
 }
 
 .mjp-text-vertical p {
-    margin-left: 20px;
+    margin-left: 1rem;
     color: #555;
     text-align: justify;
 }
 
 /* Floating Image */
 .mjp-image-floating {
-    width: 400px;
-    height: 550px;
+    width: auto;
+    max-width: 45%;
+    /* Prevent image from taking up too much space */
+    height: auto;
+    max-height: 550px;
     object-fit: cover;
     box-shadow: 20px 20px 0px rgba(0, 0, 0, 0.05);
     /* Soft shadow offset */
@@ -175,8 +181,9 @@
 .mjp-story-block {
     display: flex;
     align-items: center;
-    gap: 80px;
-    margin-bottom: 150px;
+    gap: 5vw;
+    /* Responsive gap */
+    margin-bottom: 120px;
 }
 
 .mjp-story-block.reverse {
@@ -202,6 +209,8 @@
 
 .mjp-story-text {
     flex: 1;
+    min-width: 300px;
+    /* Prevent text compressed too much */
 }
 
 .mjp-label {
@@ -234,7 +243,7 @@
 
 .mjp-story-desc {
     font-size: 1rem;
-    line-height: 2.2;
+    line-height: 2.0;
     color: #666;
 }
 

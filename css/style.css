@@ -709,55 +709,59 @@ img {
 }
 
 /* ==========================================================================
-   Message Section
+   Message Section (Dictionary Style)
    ========================================================================== */
 .message-container {
     text-align: center;
-    max-width: 100%;
-    /* Allow full width centering */
-    display: flex;
-    /* Use flexbox for centering */
-    justify-content: center;
-    /* Center horizontally */
-    flex-direction: column;
-    /* Stack title and body */
-    align-items: center;
-    /* Center items */
-}
-
-.message-sub {
-    font-size: 1.2rem;
-    margin-bottom: 60px;
-    font-weight: 500;
-    color: var(--color-primary);
-}
-
-.message-body.vertical-text {
-    writing-mode: vertical-rl;
-    text-orientation: upright;
-    font-family: var(--font-serif);
-    font-size: 1.25rem;
-    /* Increased font size */
-    line-height: 2.5;
-    height: 650px;
-    /* Increased height for longer text */
+    max-width: 800px;
     margin: 0 auto;
-    /* Ensure no erratic margins */
-    width: auto;
-    /* Let it define its own width based on content */
+}
+
+.message-body {
     text-align: left;
-    /* Align text to top of columns */
+    display: inline-block;
+    max-width: 100%;
 }
 
-/* Typing Effect Initial State */
-.typing-target p {
-    visibility: hidden;
-    /* Hide text initially, Layout preserved */
+.dict-term-container {
+    margin-bottom: 40px;
+    text-align: left;
 }
 
-.typing-target.is-typing p {
-    visibility: visible;
-    /* Make visible when typing starts (controlled by JS) */
+.dict-term {
+    font-size: 2rem;
+    font-family: var(--font-serif);
+    border-bottom: 1px solid var(--color-text);
+    padding-bottom: 10px;
+    margin-bottom: 0;
+    display: inline-block;
+}
+
+.dict-block {
+    margin-bottom: 30px;
+    text-align: left;
+    padding-left: 20px;
+    border-left: 2px solid #eee;
+}
+
+.dict-desc {
+    font-size: 1.1rem;
+    line-height: 2.2;
+    color: var(--color-text);
+}
+
+@media (max-width: 768px) {
+    .dict-term {
+        font-size: 1.5rem;
+    }
+
+    .dict-block {
+        padding-left: 15px;
+    }
+
+    .dict-desc {
+        font-size: 1rem;
+    }
 }
 
 /* ==========================================================================
