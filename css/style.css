@@ -713,7 +713,9 @@ img {
    ========================================================================== */
 .message-container {
     text-align: center;
-    max-width: 800px;
+    max-width: 1000px;
+    /* Increased from 800px */
+    width: 100%;
     margin: 0 auto;
 }
 
@@ -1319,12 +1321,13 @@ img {
     padding: 20px;
     text-align: left;
     /* Top align in vertical mode */
-    overflow: hidden;
-    /* Hide all scrollbars */
+    overflow-x: auto;
+    /* Allow scroll if needed, instead of hidden */
 }
 
 .dict-block {
-    margin-left: 50px;
+    margin-left: 30px;
+    /* Reduced from 50px */
     /* Space between paragraphs */
     margin-bottom: 0;
     opacity: 0;
@@ -1337,7 +1340,8 @@ img {
 }
 
 .dict-term-container {
-    margin-left: 50px;
+    margin-left: 30px;
+    /* Reduced from 50px */
     margin-bottom: 0;
     opacity: 0;
     width: auto;
