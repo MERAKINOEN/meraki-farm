@@ -110,7 +110,8 @@
 .mjp-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 40px;
+    padding: 0 8%;
+    /* Increased from 40px to 8% for more side margin */
     position: relative;
 }
 
