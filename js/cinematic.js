@@ -282,7 +282,7 @@ const scrollTween = gsap.to(horizontalContainer, {
         trigger: "#harvest",
         pin: true,
         scrub: 1,
-        end: "+=4000", // Slower scroll for "Atmosphere"
+        end: () => "+=" + (horizontalContainer.scrollWidth * 1.5), // Scale scroll speed automatically based on total width
         invalidateOnRefresh: true
     }
 });

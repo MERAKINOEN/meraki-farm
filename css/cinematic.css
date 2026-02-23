@@ -878,6 +878,10 @@ body::-webkit-scrollbar {
 .p-image-wrap img {
     width: 100%;
     height: auto;
+    max-height: 60vh;
+    /* Prevent the image from growing taller than the screen height */
+    object-fit: contain;
+    /* Guarantee the entire image width and height is visible inside the box */
     display: block;
     /* Use natural height, no cropping */
     transition: transform 0.8s ease;
