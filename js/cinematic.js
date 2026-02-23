@@ -288,7 +288,19 @@ const scrollTween = gsap.to(horizontalContainer, {
 });
 
 // Mobile "Float Up" Animations (Container Animation)
-// Mobile "Float Up" Animations (Container Animation)
+// First, ensure all items start visible by default to prevent stuck opacity issues on any device.
+const allItems = document.querySelectorAll(".h-item");
+allItems.forEach((item, i) => {
+    // Spacer and Koshihikari MUST start visible because they are immediately on screen.
+    if (i <= 1) {
+        gsap.set(item, { opacity: 1 });
+        const imgWrap = item.querySelector(".p-image-wrap");
+        if (imgWrap) gsap.set(imgWrap, { opacity: 1 });
+        const info = item.querySelector(".p-info");
+        if (info) gsap.set(info, { opacity: 1 });
+    }
+});
+
 if (isMobile) {
     const items = document.querySelectorAll(".h-item");
     items.forEach((item, i) => {
