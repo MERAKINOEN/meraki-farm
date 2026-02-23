@@ -1,0 +1,483 @@
+@charset "UTF-8";
+
+/* ==========================================================================
+   Variables & Tone
+   ========================================================================== */
+:root {
+    --c-bg: #fcfbf9;
+    /* Warm White */
+    --c-text: #2c2c2c;
+    /* Soft Black */
+    --c-sub: #888888;
+    /* Gray */
+    --c-accent: #9a8f83;
+    /* Greige */
+    --c-pale: #f4f3ef;
+    /* Light Greige Section Bg */
+    --c-white: #ffffff;
+
+    --font-mincho: 'Zen Old Mincho', serif;
+    --font-serif: 'Noto Serif JP', serif;
+    --font-sans: 'Noto Sans JP', sans-serif;
+
+    --easing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Reset */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: auto;
+    /* Handled by GSAP if using SmoothScroll, otherwise auto */
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--c-bg);
+    color: var(--c-text);
+    line-height: 2;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ==========================================================================
+   Typography & Utils
+   ========================================================================== */
+.font-mincho {
+    font-family: var(--font-mincho);
+}
+
+.font-serif {
+    font-family: var(--font-serif);
+}
+
+.t-lg {
+    font-size: clamp(2rem, 5vw, 4rem);
+    letter-spacing: 0.1em;
+    line-height: 1.6;
+}
+
+.t-md {
+    font-size: clamp(1.1rem, 2.5vw, 1.8rem);
+    letter-spacing: 0.08em;
+}
+
+.t-sm {
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    color: var(--c-text);
+}
+
+.t-xs {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    opacity: 0.7;
+}
+
+/* Mobile Optimization Classes */
+.pc-only {
+    display: block;
+}
+
+.sp-only {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .pc-only {
+        display: none;
+    }
+
+    .sp-only {
+        display: block;
+    }
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
+.mt-large {
+    margin-top: 60px;
+}
+
+.mb-medium {
+    margin-bottom: 30px;
+}
+
+.mb-large {
+    margin-bottom: 60px;
+}
+
+.relative {
+    position: relative;
+}
+
+.pos-abs {
+    position: absolute;
+}
+
+/* ==========================================================================
+   Layout Components
+   ========================================================================== */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5vw;
+}
+
+.section {
+    padding: 15vh 0;
+    /* Huge airy padding */
+}
+
+@media (max-width: 768px) {
+    .section {
+        padding: 10vh 0;
+        /* Slightly tighter on mobile */
+    }
+}
+
+.bg-pale {
+    background-color: var(--c-pale);
+}
+
+.bg-dark {
+    background-color: #1a1a1a;
+    color: var(--c-white);
+}
+
+/* ==========================================================================
+   Header & Nav
+   ========================================================================== */
+.fixed-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 30px 5vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    mix-blend-mode: difference;
+    /* Visible on light/dark */
+    color: #fff;
+    /* Blend mode needs white to invert */
+}
+
+.brand {
+    font-size: 1.2rem;
+    letter-spacing: 0.2em;
+}
+
+.nav-desktop a {
+    margin-left: 30px;
+    font-family: var(--font-mincho);
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+}
+
+/* ==========================================================================
+   Hero Section
+   ========================================================================== */
+.hero-section {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-bg-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.hero-media {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.1);
+    /* Initial zoom for animation */
+}
+
+.hero-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    color: var(--c-white);
+}
+
+.hero-logo {
+    font-size: clamp(3rem, 10vw, 6rem);
+    letter-spacing: 0.5em;
+    margin-left: 0.5em;
+    /* Compensate */
+    font-weight: 500;
+}
+
+.hero-sub {
+    margin-top: 20px;
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+    opacity: 0.9;
+}
+
+.scroll-prompt {
+    position: absolute;
+    bottom: 5vh;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: var(--c-white);
+}
+
+.scroll-prompt .line {
+    width: 1px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+.scroll-prompt .line::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    transform: translateY(-100%);
+    animation: scrollDown 2s infinite;
+}
+
+@keyframes scrollDown {
+    0% {
+        transform: translateY(-100%);
+    }
+
+    100% {
+        transform: translateY(100%);
+    }
+}
+
+/* ==========================================================================
+   Philosophy (Mixed Layout)
+   ========================================================================== */
+.text-layout-mix {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-top: 5vh;
+}
+
+.text-vertical-col {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    margin-right: 5vw;
+}
+
+.text-horizontal-col {
+    max-width: 500px;
+    margin-top: 10vh;
+    /* Offset for asymmetry */
+}
+
+@media (max-width: 768px) {
+    .text-layout-mix {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .text-vertical-col {
+        writing-mode: horizontal-tb;
+        /* Switch to horizontal on mobile for readability */
+        margin-right: 0;
+        margin-bottom: 40px;
+        text-align: center;
+    }
+
+    .text-horizontal-col {
+        margin-top: 0;
+        padding: 0 20px;
+    }
+}
+
+/* ==========================================================================
+   Full Image Interlude
+   ========================================================================== */
+.section-full-img {
+    height: 60vh;
+    overflow: hidden;
+    position: relative;
+}
+
+.parallax-img {
+    width: 100%;
+    height: 120%;
+    /* Taller for parallax */
+    object-fit: cover;
+    object-position: center;
+}
+
+/* ==========================================================================
+   Products
+   ========================================================================== */
+.products-section .section-header {
+    margin-bottom: 80px;
+}
+
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8vw;
+}
+
+@media (max-width: 768px) {
+    .product-list {
+        grid-template-columns: 1fr;
+        gap: 60px;
+    }
+}
+
+.product-item {
+    position: relative;
+}
+
+.product-img-frame {
+    overflow: hidden;
+    margin-bottom: 25px;
+    /* Slightly rounded corners for organic feel */
+    border-radius: 2px 20px 2px 20px;
+    transition: border-radius 0.5s ease;
+}
+
+.product-link:hover .product-img-frame {
+    border-radius: 20px 2px 20px 2px;
+    /* Morph shape on hover */
+}
+
+.product-img-frame img {
+    transition: transform 1.2s var(--easing);
+}
+
+.product-link:hover .product-img-frame img {
+    transform: scale(1.1);
+}
+
+.product-name {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+/* ==========================================================================
+   Journal
+   ========================================================================== */
+.flex-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 50px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 20px;
+}
+
+.journal-row {
+    display: flex;
+    align-items: baseline;
+    padding: 25px 0;
+    border-bottom: 1px solid #eee;
+    transition: background 0.3s;
+}
+
+.journal-row:hover {
+    background-color: rgba(0, 0, 0, 0.01);
+}
+
+.journal-date {
+    width: 120px;
+    color: var(--c-sub);
+    flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+    .journal-row {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.contact-btn {
+    display: inline-block;
+    padding: 15px 40px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    font-family: var(--font-mincho);
+    transition: all 0.3s;
+}
+
+.contact-btn:hover {
+    background: #fff;
+    color: #000;
+}
+
+/* Loading Screen */
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--c-bg);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.8s ease;
+    pointer-events: none;
+}
+
+.is-loading .loader {
+    opacity: 1;
+}
+
+body:not(.is-loading) .loader {
+    opacity: 0;
+}

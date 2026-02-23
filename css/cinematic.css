@@ -1,0 +1,1161 @@
+@charset "UTF-8";
+
+:root {
+    /* Wabi-Sabi Theme */
+    --c-bg: #f2f5f3;
+    /* Pale Greenish Greige */
+    --c-text: #2b2b2b;
+    /* Sumi Ink (not pure black) */
+    --c-gold: #a89f8d;
+    /* Dull Gold / Brass (oxidized feel) */
+    --c-glass: rgba(0, 0, 0, 0.03);
+    --font-main: 'Zen Old Mincho', serif;
+    --font-sub: 'Noto Serif JP', serif;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.content-left,
+.content-right {
+    position: relative;
+    z-index: 2;
+    padding: 10%;
+    /* Default padding */
+    /* padding-top: 20vh; Removed to fix positioning */
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* Washi/Noise Texture Overlay */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.08;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    mix-blend-mode: multiply;
+}
+
+body {
+    background-color: var(--c-bg);
+    color: var(--c-text);
+    font-family: var(--font-sub);
+    overflow-x: hidden;
+    /* Hide scrollbar */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+/* Canvas Layer */
+#world {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 0;
+}
+
+/* Hero Background Image (Faint) */
+#intro::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../images/hero_landscape.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.9;
+    /* Increased per request */
+    z-index: 0;
+    /* Changed from -1 to sit ABOVE the wireframe (canvas) */
+    filter: grayscale(0.2) sepia(0.1);
+    /* Blend with wabi-sabi theme */
+}
+
+@media (max-width: 768px) {
+    #intro::before {
+        background-position: left center;
+        /* Mobile: Focus on left side */
+    }
+}
+
+/* UI Layer */
+.ui-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    pointer-events: none;
+}
+
+.hero-logo {
+    display: block;
+    margin-top: 2rem;
+    filter: brightness(0) invert(1);
+    opacity: 0.9;
+}
+
+.hero-logo img {
+    height: clamp(6rem, 12vh, 10rem);
+    /* MUCH Larger than text */
+    width: auto;
+    display: block;
+}
+
+/* --- Hamburger Menu Button --- */
+.hamburger-btn {
+    margin-top: 30px;
+    /* Space from logo */
+    width: 30px;
+    height: 20px;
+    position: relative;
+    cursor: pointer;
+    z-index: 2000;
+    /* Extremely high to stay above overlay */
+}
+
+.hamburger-btn span {
+    display: block;
+    position: absolute;
+    height: 1px;
+    /* Very thin lines for elegance */
+    width: 100%;
+    background: #fff;
+    /* White against the dark hero background initially */
+    border-radius: 2px;
+    opacity: 1;
+    left: 0;
+    transition: 0.25s ease-in-out;
+}
+
+/* Initially 3 lines */
+.hamburger-btn span:nth-child(1) {
+    top: 0px;
+}
+
+.hamburger-btn span:nth-child(2) {
+    top: 9px;
+}
+
+.hamburger-btn span:nth-child(3) {
+    top: 18px;
+}
+
+/* Open State (Cross) */
+.hamburger-btn.open span {
+    background: var(--c-text);
+    /* Black when menu is open on light bg */
+}
+
+.hamburger-btn.open span:nth-child(1) {
+    top: 9px;
+    transform: rotate(135deg);
+}
+
+.hamburger-btn.open span:nth-child(2) {
+    opacity: 0;
+    left: -20px;
+}
+
+.hamburger-btn.open span:nth-child(3) {
+    top: 9px;
+    transform: rotate(-135deg);
+}
+
+/* --- Fullscreen Overlay Menu --- */
+.fullscreen-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.98);
+    /* Lighter, whiter background */
+    z-index: 1500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s;
+    /* Faster, smoother transition */
+    backdrop-filter: blur(8px);
+    /* slightly blurrier backend */
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.fullscreen-menu.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.menu-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Vertical Navigation Links */
+.vertical-nav {
+    display: flex;
+    flex-direction: row-reverse;
+    /* Japanese vertical reads right-to-left */
+    gap: 40px;
+    /* Space between vertical columns */
+    z-index: 2;
+}
+
+.menu-link {
+    text-decoration: none;
+    color: #333;
+    /* Slightly softer black */
+    font-family: var(--font-main);
+    font-size: clamp(1.2rem, 3vh, 1.8rem);
+    /* Slightly smaller/lighter text */
+    font-weight: 300;
+    /* Lighter font weight */
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    letter-spacing: 0.4em;
+    /* More spacing for lighter feel */
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease;
+    padding: 20px 0;
+}
+
+.menu-link span {
+    display: block;
+    position: relative;
+    opacity: 0;
+    /* Prepare for staggered fade-in */
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.fullscreen-menu.active .menu-link span {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Add slight delay for each link to animate in sequentially */
+.fullscreen-menu.active .menu-link:nth-child(1) span {
+    transition-delay: 0.1s;
+}
+
+.fullscreen-menu.active .menu-link:nth-child(2) span {
+    transition-delay: 0.15s;
+}
+
+.fullscreen-menu.active .menu-link:nth-child(3) span {
+    transition-delay: 0.2s;
+}
+
+.fullscreen-menu.active .menu-link:nth-child(4) span {
+    transition-delay: 0.25s;
+}
+
+.fullscreen-menu.active .menu-link:nth-child(5) span {
+    transition-delay: 0.3s;
+}
+
+.fullscreen-menu.active .menu-link:nth-child(6) span {
+    transition-delay: 0.35s;
+}
+
+.menu-link:hover {
+    color: var(--c-gold);
+}
+
+/* Faint background decoration inside menu */
+.menu-bg-deco {
+    position: absolute;
+    bottom: -10%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0.05;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.menu-bg-logo {
+    width: clamp(300px, 80vw, 800px);
+    height: auto;
+    filter: invert(1);
+    /* Assuming logo is white, invert to black/grey */
+}
+
+.intro-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.cinematic-nav {
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    pointer-events: auto;
+}
+
+.nav-dot {
+    width: 6px;
+    height: 6px;
+    background: #000;
+    border-radius: 50%;
+    opacity: 0.2;
+    transition: all 0.3s;
+}
+
+.nav-dot.active {
+    opacity: 1;
+    background: var(--c-gold);
+    transform: scale(1.5);
+}
+
+.nav-line {
+    width: 1px;
+    height: 100px;
+    background: rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+/* Global Header */
+.global-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 30px 50px;
+    z-index: 900;
+    /* Below Brand Logo (1000) if relevant, but Brand Logo is inside scroll now? No, Brand Logo is in Intro. */
+    /* Intro is z-index 0 (or auto). Canvas is 0. */
+    /* Header should be high. */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.5s, visibility 0.5s;
+}
+
+.global-header.visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.header-nav {
+    display: flex;
+    gap: 40px;
+}
+
+.header-nav a {
+    color: #fff;
+    text-decoration: none;
+    font-family: var(--font-main);
+    font-size: 0.9rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    position: relative;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.header-nav a:hover {
+    opacity: 1;
+}
+
+.header-nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 1px;
+    background: #fff;
+    transition: width 0.3s;
+}
+
+
+.header-nav a:hover::after {
+    width: 100%;
+}
+
+/* Scrolled State (Past Hero) */
+.global-header.scrolled {
+    background-color: rgba(227, 232, 229, 0.3);
+    /* Even More Transparent */
+    backdrop-filter: blur(10px);
+    /* Frosted glass effect */
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 20px 50px;
+    /* Slight shrink for compactness */
+}
+
+.global-header.scrolled .header-nav a {
+    color: var(--c-text);
+    /* Black/Sumi */
+    text-shadow: none;
+}
+
+.global-header.scrolled .header-nav a::after {
+    background: var(--c-text);
+}
+
+/* Scroll Scenes */
+.scene {
+    min-height: auto;
+    /* Removed 100vh default to allow tighter spacing */
+    padding-bottom: 80px;
+    /* Add base bottom spacing */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#intro {
+    height: 100vh;
+    /* Re-apply strict 100vh so it fills screen initially */
+    padding-bottom: 0;
+}
+
+.center-scene,
+.left-scene,
+.right-scene {
+    height: auto;
+    /* Removed fixed 100vh height for initial scenes to allow tighter spacing */
+}
+
+#soil,
+#growth {
+    align-items: flex-start;
+    padding-top: 100px;
+    /* Reduced from 150px to tighten up space */
+}
+
+#growth {
+    padding-top: 200px;
+    /* Increased to create more distance from top image */
+}
+
+/* PC Layout for ABOUT (Asymmetrical Layout) */
+@media (min-width: 769px) {
+    #soil .content-left {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        /* 50% / 50% Split */
+        grid-template-areas:
+            "title desc"
+            "lead  desc"
+            "image desc";
+        column-gap: 80px;
+        /* Spacious gap between image/title and text */
+        row-gap: 20px;
+        /* Vertical space between title/lead and image */
+        align-items: start;
+        max-width: 1200px;
+        /* Let it breathe a bit wider */
+        width: 90%;
+        margin: 0 auto;
+        padding: 0 40px;
+    }
+
+    #soil .section-title {
+        grid-area: title;
+        margin-bottom: -35px;
+        /* Pull the lead text closer */
+        text-align: center;
+        /* Center horizontally over the image area */
+        width: 100%;
+        /* Reset to 100% */
+    }
+
+    #soil .section-lead {
+        grid-area: lead;
+        text-align: center;
+        /* Center horizontally */
+        width: 100%;
+        /* Reset to 100% */
+        margin-bottom: 25px;
+        /* Space before image starts */
+    }
+
+    #soil .section-desc {
+        grid-area: desc;
+        margin-top: 5px;
+        /* Align top of text roughly with top of title */
+        text-align: left;
+        justify-self: start;
+        /* Let it flow naturally from the left of its 50% column */
+        width: 100%;
+        max-width: 500px;
+    }
+
+    #soil .about-image-small {
+        grid-area: image;
+        width: 100%;
+        /* Reset to 100% */
+        justify-self: center;
+        /* Center */
+        margin-top: 0;
+        border-radius: 4px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        /* Float effect */
+        overflow: hidden;
+    }
+
+    #soil .about-image-small img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: transform 0.5s ease;
+    }
+
+    #soil .about-image-small:hover img {
+        transform: scale(1.03);
+        /* Subtle interaction */
+    }
+
+    #soil .about-image-wrapper {
+        grid-column: 1 / -1;
+        /* Span full width */
+        width: 100%;
+        margin-top: 60px;
+    }
+}
+
+/* PC Layout for CONCEPT (Match Asymmetrical Layout of ABOUT) */
+@media (min-width: 769px) {
+    #growth .concept-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        /* 50% / 50% Split */
+        grid-template-areas:
+            "title title"
+            "lead  lead"
+            "image desc";
+        column-gap: 80px;
+        align-items: flex-start;
+        /* Align the top of the image and the text perfectly */
+        max-width: 1200px;
+        /* Match ABOUT */
+        width: 90%;
+        margin: 0 auto;
+        padding: 0 40px;
+    }
+
+    #growth .concept-title {
+        grid-area: title;
+        margin-bottom: 8px;
+        /* Gentle spacing */
+        text-align: center;
+        width: 100%;
+    }
+
+    #growth .concept-lead {
+        grid-area: lead;
+        margin-bottom: 40px;
+        /* Space before image starts */
+        text-align: center;
+        width: 100%;
+        letter-spacing: 0.05em;
+    }
+
+    #growth .concept-image-slider {
+        grid-area: image;
+        width: 100%;
+        max-width: 500px;
+        /* Restrict max size so it doesn't look too bulky */
+        justify-self: center;
+        margin-top: 0;
+    }
+
+    #growth .concept-desc {
+        grid-area: desc;
+        margin-top: 0;
+        text-align: left;
+        /* Keep left alignment for readability */
+        justify-self: center;
+        /* Center the text block itself inside the column */
+        width: 100%;
+        max-width: 450px;
+    }
+}
+
+.about-image-wrapper {
+    width: 100%;
+    margin-top: 40px;
+    overflow: hidden;
+}
+
+.about-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    /* filter: sepia(0.2) contrast(0.9); Enable if retro look needed */
+    border-radius: 2px;
+}
+
+/* Small Image inside ABOUT */
+.about-image-small {
+    width: 100%;
+    /* max width for its container */
+    max-width: 450px;
+    /* Adjusted to fit the ABOUT text column nicely */
+    margin-top: 20px;
+    margin-bottom: 30px;
+    margin-left: auto;
+    /* Push to right slightly to align with right-aligned title, or override in grid */
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.about-image-small img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+/* Concept Image Slider (Matches about-image-small) */
+.concept-image-slider {
+    position: relative;
+    width: 100%;
+    max-width: 450px;
+    aspect-ratio: 4 / 3;
+    /* Approximate ratio for the landscape photos */
+    margin-top: 20px;
+    margin-bottom: 30px;
+    margin-right: auto;
+    /* Push to left slightly to align with right-aligned title on PC */
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    background-color: #e0e0e0;
+    /* placeholder while loading */
+}
+
+/* Base slide styles */
+.concept-image-slider .slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    animation: fadeSlideshow 40s infinite;
+    /* 4 images * 10s each = 40s total */
+}
+
+/* Stagger the animations for each of the 4 images */
+.concept-image-slider .slide:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.concept-image-slider .slide:nth-child(2) {
+    animation-delay: 10s;
+}
+
+.concept-image-slider .slide:nth-child(3) {
+    animation-delay: 20s;
+}
+
+.concept-image-slider .slide:nth-child(4) {
+    animation-delay: 30s;
+}
+
+/* Continuous Crossfade Animation
+   Total duration: 40s
+   We want it visible for 10s.
+   Fade in starts slightly before to blend, but we can do a simple chunk:
+   0%   : fade in starts (or is visible)
+   5%   : fully visible (2s to fade in)
+   25%  : starts fading out (after 10s)
+   30%  : fully faded out (2s to fade out)
+   100% : stays faded out
+*/
+@keyframes fadeSlideshow {
+    0% {
+        opacity: 0;
+    }
+
+    5% {
+        opacity: 1;
+    }
+
+    25% {
+        opacity: 1;
+    }
+
+    30% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Typography */
+.main-title {
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(1.2rem, 4vh, 2.5rem);
+    /* Scaled to viewport height for vertical text */
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    line-height: 2;
+    /* Space between vertical lines */
+    margin-bottom: 0;
+    color: #ffffff;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+    /* Strong glow for readability */
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    margin-left: auto;
+    margin-right: auto;
+    /* Center the block itself */
+    display: block;
+    /* Use block layout for text-align */
+    text-align: left;
+    /* Align text to TOP (Head alignment) */
+    width: fit-content;
+    /* Hug content so margin:auto works */
+    min-height: auto;
+    /* Allow centering to work by removing fixed height */
+    white-space: nowrap;
+    /* Prevent auto-wrapping */
+}
+
+.section-title {
+    font-family: var(--font-main);
+    font-size: clamp(2rem, 5vw, 4rem);
+    margin-bottom: -15px;
+    /* Reduced gap to lead */
+    color: var(--c-gold);
+}
+
+.section-lead {
+    font-family: var(--font-main);
+    font-size: 1.5rem;
+    margin-top: 0;
+    /* Eliminate default top gap */
+    margin-bottom: 20px;
+    color: var(--c-gold);
+    /* Match ABOUT color */
+}
+
+.section-desc {
+    font-size: 0.95rem;
+    /* Smaller text size */
+    line-height: 1.9;
+    /* Tighter line spacing */
+    letter-spacing: 0.1em;
+    color: rgba(0, 0, 0, 0.8);
+}
+
+@media (max-width: 768px) {
+    .section-desc {
+        font-size: 0.85rem;
+        /* Smaller for mobile to prevent wrapping */
+        letter-spacing: 0.02em;
+        line-height: 2;
+    }
+
+    .content-left {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+}
+
+/* Layouts */
+.content-center {
+    text-align: center;
+}
+
+/* Removed conflicting .content-left/.content-right overrides to restore full width */
+
+/* Horizontal Scroll (Harvest) */
+.horizontal-wrapper {
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    /* Will be pinned */
+}
+
+.horizontal-container {
+    display: flex;
+    height: 100%;
+    width: max-content;
+    /* Dynamic width based on content */
+    align-items: center;
+    padding-left: 0;
+    /* Handled by 100vw spacer now */
+    padding-right: 50vw;
+    /* Ensure extra space at the end so it doesn't abruptly stop */
+    gap: 15vw;
+    /* Comfortable breathing room between products */
+}
+
+.h-item {
+    flex-shrink: 0;
+}
+
+.title-card {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* Global Product Title above Horizontal Scroll */
+.product-title-block {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 10vh;
+    padding-bottom: 5vh;
+}
+
+/* Product Cards */
+.product-card {
+    position: relative;
+    width: clamp(280px, 50vw, 500px);
+    /* Slightly reduced width to make images a bit smaller */
+}
+
+.p-image-wrap {
+    width: 100%;
+    height: auto;
+    /* Removed aspect-ratio constraint so the natural image ratio is used */
+    overflow: hidden;
+    position: relative;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.p-image-wrap img {
+    width: 100%;
+    height: auto;
+    display: block;
+    /* Use natural height, no cropping */
+    transition: transform 0.8s ease;
+}
+
+.p-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(184, 149, 85, 0.2) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.product-card:hover img {
+    transform: scale(1.1);
+}
+
+.product-card:hover .p-glow {
+    opacity: 1;
+}
+
+.p-name {
+    font-family: var(--font-main);
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    color: #000;
+}
+
+.p-desc {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.p-btn {
+    display: inline-block;
+    padding: 10px 30px;
+    border: 1px solid #1a1a1a;
+    color: #1a1a1a;
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    transition: all 0.3s;
+}
+
+.p-btn:hover {
+    background: #1a1a1a;
+    color: #fff;
+}
+
+.circle-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 1px solid var(--c-gold);
+    color: var(--c-gold);
+    text-decoration: none;
+    text-align: center;
+    font-family: var(--font-main);
+    font-size: 1.2rem;
+    transition: all 0.5s;
+}
+
+.circle-link:hover {
+    background: var(--c-gold);
+    color: #fff;
+    transform: scale(1.1);
+}
+
+/* Constellation Journal */
+.constellation-scene {
+    height: 120vh;
+    display: block;
+    /* Custom Layout */
+    padding-top: 10vh;
+}
+
+.constellation-grid {
+    position: relative;
+    width: 100%;
+    height: 80vh;
+    margin-top: 50px;
+}
+
+.star-node {
+    position: absolute;
+    width: 200px;
+    /* Interaction */
+    cursor: pointer;
+}
+
+.star-point {
+    width: 10px;
+    height: 10px;
+    background: #ccc;
+    border-radius: 50%;
+    border: 1px solid #aaa;
+    margin-bottom: 10px;
+    transition: transform 0.3s;
+}
+
+.star-node:hover .star-point {
+    transform: scale(1.5);
+    background: var(--c-gold);
+    border-color: var(--c-gold);
+    box-shadow: 0 0 20px rgba(184, 149, 85, 0.5);
+}
+
+.star-date {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--c-gold);
+    margin-bottom: 5px;
+}
+
+.star-title {
+    font-family: var(--font-main);
+    font-size: 1rem;
+    color: #000;
+}
+
+.constellation-line {
+    position: absolute;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.1);
+    transform-origin: left center;
+}
+
+/* Credits */
+.credits-scene {
+    height: 150vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.credits-roll {
+    text-align: center;
+}
+
+.credit-role {
+    font-size: 0.8rem;
+    color: #888;
+    letter-spacing: 0.2em;
+    margin-top: 40px;
+    margin-bottom: 10px;
+}
+
+.credit-name {
+    font-size: 1.2rem;
+    font-family: var(--font-main);
+}
+
+.final-logo {
+    margin-top: 100px;
+    font-size: 4rem;
+    font-family: var(--font-main);
+    opacity: 0.8;
+}
+
+.explore-btn {
+    display: inline-block;
+    padding: 15px 50px;
+    border: 1px solid var(--c-gold);
+    color: var(--c-gold);
+    text-decoration: none;
+    margin-top: 30px;
+    letter-spacing: 0.2em;
+    transition: all 0.3s;
+}
+
+.explore-btn:hover {
+    background: var(--c-gold);
+    color: #000;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+    .content-left,
+    .content-right {
+        position: relative;
+        left: auto;
+        right: auto;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .horizontal-container {
+        width: max-content;
+        padding-left: 0;
+        padding-right: 0;
+        gap: 0;
+    }
+
+    .h-item {
+        width: 100vw;
+        /* 1 screen = 1 item */
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0 10vw;
+        /* internal spacing */
+        opacity: 0.2;
+        /* Fade in effect base */
+        transition: opacity 0.5s;
+    }
+
+    .title-card {
+        width: 100vw;
+        margin-bottom: 0;
+    }
+
+    .product-card {
+        width: 100%;
+        max-width: 350px;
+    }
+
+    .product-card {
+        width: 80vw;
+    }
+
+    .constellation-grid {
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        padding: 0 20px;
+    }
+
+    .star-node {
+        position: relative;
+        top: auto !important;
+        left: auto !important;
+        width: 100%;
+        border-left: 1px solid rgba(255, 255, 255, 0.2);
+        padding-left: 20px;
+    }
+
+    .constellation-line {
+        display: none;
+    }
+
+    /* Hide lines on mobile */
+    .star-point {
+        position: absolute;
+        left: -5px;
+        top: 0;
+    }
+}
+
+.scroll-prompt {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7rem;
+    opacity: 0.5;
+    animation: blink 2s infinite;
+    pointer-events: none;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 0.2
+    }
+
+    50% {
+        opacity: 0.8
+    }
+}

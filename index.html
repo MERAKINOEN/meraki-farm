@@ -4,412 +4,310 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>米良氣農園（めらきのうえん） | 岐阜県恵那市 自然栽培のコシヒカリ・古代米</title>
-    <meta name="description"
-        content="岐阜県恵那市中野方町、米良氣農園（めらきのうえん）公式。自然栽培（無農薬・無肥料）で育てたコシヒカリと黒米をお届けします。生命エネルギーあふれる「氣」の入ったお米です。">
-    <meta name="keywords" content="米良氣農園,めらきのうえん,自然栽培,無農薬,無肥料,コシヒカリ,黒米,古代米,岐阜県,恵那市,中野方町">
+    <title>米良氣 - Meraki Farm | Cinematic Experience</title>
+    <meta name="description" content="米良氣農園。一粒の米に宿る宇宙。自然栽培の極致。">
 
-    <!-- OGP (Open Graph Protocol) -->
-    <meta property="og:title" content="米良氣農園 | 自然栽培のコシヒカリ・古代米">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://merakinoen.github.io/meraki-farm/">
-    <meta property="og:image" content="https://merakinoen.github.io/meraki-farm/images/hero.png">
-    <meta property="og:description" content="自然栽培で育てた、生命力あふれるお米をお届けします。">
-    <meta property="og:site_name" content="米良氣農園 - Meraki Farm">
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-
-    <!-- Favicon (Simplified) -->
-    <link rel="icon" type="image/png" href="images/favicon.png">
-
-    <!-- Google Fonts -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;500;600&family=Zen+Old+Mincho:wght@400;500;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Old+Mincho:wght@400;700;900&family=Noto+Serif+JP:wght@300;600&display=swap"
         rel="stylesheet">
+
     <!-- Styles -->
-    <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/recipes.css">
-    <link rel="stylesheet" href="css/slideshow.css">
+    <link rel="stylesheet" href="css/cinematic.css">
+
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
 </head>
 
 <body>
-    <div class="loading-screen" id="loadingScreen">
-        <div class="logo-text">米良氣</div>
-    </div>
 
-    <header class="header" id="header">
-        <div class="header-inner">
-            <h1 class="logo"><a href="#">米良氣農園</a></h1>
-            <nav class="nav">
-                <ul class="nav-list">
-                    <li><a href="#concept">こだわり</a></li>
-                    <li><a href="#products">商品紹介</a></li>
-                    <li><a href="https://note.com/meraki_noen" target="_blank">農園日誌 (note)</a></li>
-                    <li><a href="about.html">私たちについて</a></li>
-                    <li><a href="#contact" class="btn-contact">お問い合わせ</a></li>
-                </ul>
-            </nav>
-            <div class="hamburger" id="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
+    <!-- Immersive WebGL Canvas -->
+    <canvas id="world"></canvas>
+
+    <!-- Global Header (Sticky, Fades in) -->
+    <header id="global-header" class="global-header">
+        <nav class="header-nav">
+            <a href="#growth">CONCEPT</a>
+            <a href="#harvest">PRODUCT</a>
+            <a href="#soil">ABOUT</a>
+            <a href="#journal">JOURNAL</a>
+            <a href="#recipe">RECIPE</a>
+            <a href="#faq">FAQ</a>
+            <a href="#credits">CONTACT</a>
+        </nav>
     </header>
 
-    <main>
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="hero-bg">
-                <!-- 春: 苗と機械 -->
-                <img src="images/hero_slide_4.jpg" class="hero-slide active" alt="春の田んぼ・苗">
+    <!-- UI Overlay (Fixed) -->
+    <!-- Brand Logo Moved to Content -->
+    <nav class="cinematic-nav">
+        <div class="nav-line"></div>
+        <a href="#intro" class="nav-dot active"></a>
+        <a href="#growth" class="nav-dot"></a>
+        <a href="#harvest" class="nav-dot"></a>
+        <a href="#soil" class="nav-dot"></a>
+        <a href="#journal" class="nav-dot"></a>
+        <a href="#recipe" class="nav-dot"></a>
+        <a href="#faq" class="nav-dot"></a>
+        <a href="#credits" class="nav-dot"></a>
+    </nav>
+    </div>
 
-                <!-- 夏: 青空と緑 -->
-                <img src="images/hero_slide_3.jpg" class="hero-slide" alt="夏の青空と田んぼ">
+    <!-- Scroll Content (GSAP Driver) -->
+    <div class="scroll-container">
 
-                <!-- 夏〜秋: 棚田の風景（メイン） -->
-                <img src="images/hero_slide_1.jpg" class="hero-slide" alt="中野方町の棚田と山々">
+        <!-- Scene 0: The Void / Opening -->
+        <section id="intro" class="scene center-scene">
+            <div class="content-center intro-text">
+                <h1 class="main-title">
+                    自然の恵み。<br>
+                    そのまま。<br>
+                    恵那から。
+                </h1>
+                <a href="#" class="hero-logo">
+                    <img src="images/logo.png" alt="米良氣農園">
+                </a>
 
-                <!-- 秋: 稲架掛け -->
-                <img src="images/hero_slide_2.jpg" class="hero-slide" alt="秋の稲架掛け">
-            </div>
-            <div class="hero-content">
-                <p class="hero-copy-en">Nature's Blessing, Directly to You.</p>
-                <h2 class="hero-copy-main">
-                    自然の恵み。<br>そのまま。<br>恵那から。
-                </h2>
-                <div class="hero-scroll">
-                    <span>SCROLL</span>
-                    <div class="line"></div>
+                <!-- Hamburger Menu Button -->
+                <div class="hamburger-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </div>
+            </div>
+            <div class="scroll-prompt">SCROLL</div>
+        </section>
+
+        <!-- Scene 1: The Water & Growth (CONCEPT) -->
+        <section id="growth" class="scene right-scene">
+            <div class="content-right concept-content">
+                <h2 class="section-title concept-title">CONCEPT</h2>
+                <h3 class="section-lead concept-lead">自然の恵み。そのまま。恵那から。</h3>
+                <!-- Concept Image Slider -->
+                <div class="concept-image-slider">
+                    <img src="images/concept_new_slide_1.jpg" alt="米良氣の空" class="slide active">
+                    <img src="images/concept_new_slide_2.jpg" alt="米良氣の畑" class="slide">
+                    <img src="images/concept_new_slide_3.jpg" alt="はざ掛け" class="slide">
+                    <img src="images/concept_new_slide_4.jpg" alt="子どもと風景" class="slide">
+                </div>
+
+                <p class="section-desc concept-desc" style="text-align: left; display: inline-block;">
+                    私たちが作りたいのは、<br>
+                    特別な日のための米ではなく、<br>
+                    暮らしの中で、静かに寄り添うごはんです。<br><br>
+
+                    強い味ではなく、深い味。<br>
+                    派手さではなく、続くおいしさ。<br><br>
+
+                    水や土だけではなく、<br>
+                    この土地で過ごす時間そのものが、<br>
+                    米の一粒に宿ると信じています。<br><br>
+
+                    だから今日も、<br>
+                    家族に出せる一杯のために、<br>
+                    この山で米を作っています。
+                </p>
             </div>
         </section>
 
-
-
-
-        <section class="message section-padding">
-            <div class="container message-container">
-                <span class="section-label reveal-down">Origin</span>
-                <h3 class="section-title reveal-down delay-200" style="margin-bottom: 30px;">米良氣とは</h3>
-                <div class="message-body">
-                    <!-- Dictionary Term (appears first) -->
-                    <div class="dict-term-container reveal-up">
-                        <h4 class="dict-term">めら‐き【米良氣】〔造語〕</h4>
-                    </div>
-
-                    <!-- Item 1 (1.5s delay) -->
-                    <div class="dict-block reveal-up delay-1500">
-                        <p class="dict-desc">一　【名】天地の間に混然として存在する<br>生命の根源的なエネルギー（氣）が、<br>米という一粒の結晶の中に<br>充足している状態。</p>
-                    </div>
-
-                    <!-- Item 2 (3s delay) -->
-                    <div class="dict-block reveal-up delay-3000">
-                        <p class="dict-desc">
-                            二　【名】〔ギリシャ⁻語〕【MERAKI】<br>見返りや効率のみを求めるのではなく、<br>純粋な喜びやこだわりを持って<br>自らの魂・情熱・愛情のすべてを<br>その活動に注ぎ込むこと。<br>またはその様。
-                        </p>
-                    </div>
-
-                    <!-- Item 3 (4.5s delay) -->
-                    <div class="dict-block reveal-up delay-4500">
-                        <p class="dict-desc">
-                            三　【名・自サ】岐阜県恵那市中野方町に<br>拠点を置く農園の屋号、及びその栽培思想。<br>耕作にあたり、人為的な農薬・肥料を<br>一切排除し、土壌本来の治癒力と<br>微生物の律動にすべてを委ねる<br>自然栽培の形態を指す。
-                        </p>
-                    </div>
-
-                    <!-- Item 4 (6s delay) -->
-                    <div class="dict-block reveal-up delay-6000">
-                        <p class="dict-desc">四　【名】人間中心的な効率性を放棄し、<br>次世代への倫理的責任<br>（「己の子に食ぜしめんや」という問い）を<br>すべての判断基準とする思想。
-                        </p>
-                    </div>
-
-                    <!-- Item 5 (7.5s delay) -->
-                    <div class="dict-block reveal-up delay-7500">
-                        <p class="dict-desc">五　【農】〔―の米〕太陽・水・大地の<br>気のみによって醸成された米。<br>雑味がなく、澄濁のない滋味をするもの。<br>「―を次世代に繋ぐ」
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Concept Section -->
-        <section id="concept" class="concept section-padding">
-            <div class="container dual-layout">
-                <div class="dual-image reveal-image concept-slideshow">
-                    <img src="images/hero_slide_3.jpg" class="active" alt="恵那の空と田んぼ">
-                    <img src="images/concept_slide_morning.jpg" alt="棚田の朝">
-                    <img src="images/concept_slide_night.jpg" alt="棚田の夜景">
-                    <img src="images/concept_slide_1.jpg" alt="恵那の風景1">
-                    <img src="images/concept_slide_2.jpg" alt="恵那の風景2">
-                    <img src="images/concept_slide_3.jpg" alt="恵那の風景3">
-                    <img src="images/concept_slide_4.jpg" alt="恵那の風景4">
-                    <img src="images/concept_slide_5.jpg" alt="恵那の風景5">
-                </div>
-                <div class="dual-text">
-                    <span class="section-label reveal-text">Concept</span>
-                    <h3 class="section-title reveal-text">自然の恵み。<br>そのまま。<br>恵那から。</h3>
-                    <p class="text-body fade-in delay-200">
-                        岐阜県恵那市、中野方町。<br>
-                        標高が高く、空の青さがどこまでも深いこの町は、<br>
-                        日本の原風景を今に伝える<br>「坂折棚田」で知られています。
-                    </p>
-                    <p class="text-body fade-in delay-400">
-                        昼夜の寒暖差が大きい気候は、<br>
-                        お米や野菜の旨味を<br> 閉じ込めるために欠かせません。<br>
-                        静かで、美しく、厳しい自然。<br>
-                        手間暇を惜しまずに育てたお米は<br>ふっくらと甘みがあり<br>どこか懐かしい味わいです。
-                    </p>
-                    <div class="btn-wrapper fade-in delay-600">
-                        <a href="about.html" class="btn-arrow">私たちについて</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Products Section -->
-        <section id="products" class="products section-padding bg-light">
-            <div class="container">
-                <div class="section-header center-align">
-                    <span class="section-label reveal-down">Products</span>
-                    <h3 class="section-title reveal-down delay-200">大地からの<br>贈りもの</h3>
-                </div>
-
-                <div class="product-grid">
-                    <!-- Product 1 -->
-                    <div class="product-card reveal-up">
-                        <div class="product-image">
-                            <img src="images/product_koshihikari_v2.jpg" alt="自然栽培コシヒカリ（升入り）">
-                        </div>
-                        <div class="product-info">
-                            <h4 class="product-name">コシヒカリ</h4>
-                            <p class="product-desc">
-                                「毎日食べるものだから、一番安心できるものを。」<br>
-                                噛むほどに広がる、力強くも優しい甘みが特徴。<br>小さなお子様の初めてのご飯にもおすすめです。
-                            </p>
-                            <span class="btn-primary disabled">現在品切れ中</span>
-                        </div>
-                    </div>
-
-                    <!-- Product 2 -->
-                    <div class="product-card reveal-up delay-200">
-                        <div class="product-image">
-                            <img src="images/product_black_rice_v2.jpg" alt="古代米（黒米）">
-                        </div>
-                        <div class="product-info">
-                            <h4 class="product-name">古代米（黒米）</h4>
-                            <p class="product-desc">
-                                「スプーン一杯の、自然のサプリメント。」<br>
-                                いつもの白米に少し混ぜて炊くだけで<br>鮮やかな色彩と香ばしさをプラス。<br>ミネラル豊富な古代の知恵です。
-                            </p>
-                            <span class="btn-primary disabled">現在品切れ中</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Recipes Section -->
-        <section id="recipes" class="recipes section-padding">
-            <div class="test">
-                <div class="section-header center-align">
-                    <span class="section-label reveal-down">Recipes</span>
-                    <h3 class="section-title reveal-down delay-200">黒米の美味しい<br>食べ方いろいろ</h3>
-                </div>
-
-                <div class="recipe-grid">
-                    <!-- Recipe 1: Onigiri (Swapped to be first) -->
-                    <div class="recipe-card reveal-up">
-                        <div class="recipe-image">
-                            <!-- Improved Placeholder for Onigiri -->
-                            <img src="images/recipe_onigiri.jpg" alt="黒米おにぎり">
-                            <div class="recipe-detail-overlay">
-                                <p class="recipe-detail-text">
-                                    【材料】2人前<br>
-                                    ・白米：2合<br>
-                                    ・黒米：大さじ1<br>
-                                    ・塩：少々<br><br>
-                                    【作り方】<br>
-                                    1. 白米に黒米を混ぜて研ぐ<br>
-                                    2. 通常の水加減で炊飯<br>
-                                    3. 炊きあがったら塩を混ぜ握る
-                                </p>
-                            </div>
-                        </div>
-                        <div class="recipe-content">
-                            <h4 class="recipe-title">王道黒米おにぎり</h4>
-                            <p class="recipe-desc">
-                                白米2合に対し、黒米大さじ1を入れて炊飯。<br>
-                                ほんのり桜色に染まったご飯は、<br>
-                                梅干しや塩昆布との相性が抜群です。<br>
-                                冷めてももちもちとした食感が楽しめます。
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Recipe 2: Smoothie (Swapped to be second) -->
-                    <div class="recipe-card reveal-up delay-200">
-                        <div class="recipe-image">
-                            <!-- Improved Placeholder for Smoothie -->
-                            <img src="images/recipe_smoothie.png" alt="黒米甘酒ブルーベリースムージー">
-                            <div class="recipe-detail-overlay">
-                                <p class="recipe-detail-text">
-                                    【材料】1人前<br>
-                                    ・黒米甘酒：150ml<br>
-                                    ・豆乳：100ml<br>
-                                    ・冷凍ブルーベリー：50g<br>
-                                    ・バナナ：1本<br>
-                                    【作り方】<br>
-                                    すべての材料をミキサーに入れ、<br>
-                                    なめらかになるまで撹拌するだけ。<br>
-                                    朝食代わりにも最適です。
-                                </p>
-                            </div>
-                        </div>
-                        <div class="recipe-content">
-                            <h4 class="recipe-title">黒米甘酒ブルーベリースムージー</h4>
-                            <p class="recipe-desc">
-                                黒米甘酒の優しい甘さと、ブルーベリーの酸味が絶妙。<br>
-                                豆乳を加えてミキサーにかけるだけで、<br>
-                                飲む点滴とも言われる栄養満点の一杯に。
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-
-        <!-- Blog Section -->
-        <section id="blog" class="blog section-padding">
-            <div class="container">
-                <div class="section-header center-align">
-                    <span class="section-label reveal-down">Journal</span>
-                    <h3 class="section-title reveal-down delay-200">農園日誌</h3>
-                </div>
-                <!-- noteリンク -->
-                <!-- Article List Container -->
-                <div class="blog-grid" id="blog-list" style="margin-bottom: 40px;">
-                    <!-- JavaScript will load note articles here via RSS -->
-                    <div class="loading-blog"
-                        style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--color-text-light);">
-                        <p>noteから最新記事を読み込んでいます...</p>
-                    </div>
-                </div>
-
-                <!-- Link to Note -->
-                <div class="center-align" style="margin-top: 20px;">
-                    <a href="https://note.com/meraki_noen" target="_blank" class="btn-arrow"
-                        id="blog-view-all">noteで記事一覧を見る</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- About/Farmer Section -->
-        <section id="about" class="about section-padding">
-            <div class="container dual-layout reverse">
-                <div class="dual-image reveal-image">
-                    <img src="images/story_farmer.jpg" alt="田んぼで作業する様子">
-                </div>
-                <div class="dual-text">
-                    <span class="section-label reveal-text">Message</span>
-                    <h3 class="section-title reveal-text">ただ、真っ直ぐに<br>作ること。</h3>
-                    <p class="text-body quote fade-in delay-200">
-                        「知識がないからとりあえずやってみる」
-                    </p>
-                    <p class="text-body fade-in delay-400">
-                        2023年、家族とともに<br>中野方町へ移住してきました。<br>
-                        慣れない土地での農作業は、<br> 自然の厳しさに直面することもあります。<br>
-                        それでも、泥だらけになって働く毎日に<br>充実感を感じるのは<br>「本物」の自然があるからだと思います。
-                    </p>
-                    <p class="text-body fade-in delay-600">
-                        米良氣農園 代表
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="contact section-padding bg-light">
-            <div class="container">
-                <div class="section-header center-align">
-                    <span class="section-label reveal-down">Contact</span>
-                    <h3 class="section-title reveal-down delay-200">お問い合わせ</h3>
-                </div>
-
-                <form id="contactForm" class="custom-contact-form"
-                    action="https://docs.google.com/forms/d/e/1FAIpQLSeuj1_oxoehLb6EtUnNinMu48ud0BfIfhL9CnK5X0Q48sjwxg/formResponse"
-                    method="POST" target="hidden_iframe" onsubmit="submitted=true;">
-                    <!-- お名前 -->
-                    <div class="form-group reveal-up">
-                        <label for="entry.996518757">お名前 <span class="required">*</span></label>
-                        <input type="text" id="entry.996518757" name="entry.996518757" placeholder="山田 太郎" required>
-                    </div>
-
-                    <!-- メールアドレス -->
-                    <div class="form-group reveal-up delay-100">
-                        <label for="entry.646397582">メールアドレス <span class="required">*</span></label>
-                        <input type="email" id="entry.646397582" name="entry.646397582" placeholder="example@mail.com"
-                            required>
-                    </div>
-
-                    <!-- 連絡方法（隠し項目: メールを選択） -->
-                    <input type="hidden" name="entry.1394881284" value="メール">
-
-                    <!-- 件名 -->
-                    <div class="form-group reveal-up delay-200">
-                        <label for="entry.870972404">件名</label>
-                        <input type="text" id="entry.870972404" name="entry.870972404" placeholder="商品について">
-                    </div>
-
-                    <!-- お問い合わせ内容 -->
-                    <div class="form-group reveal-up delay-300">
-                        <label for="entry.1110299168">お問い合わせ内容 <span class="required">*</span></label>
-                        <textarea id="entry.1110299168" name="entry.1110299168" rows="6" placeholder="ご自由にご記入ください"
-                            required></textarea>
-                    </div>
-
-                    <!-- きっかけ（隠し項目: ウェブサイト） -->
-                    <input type="hidden" name="entry.1230072184" value="農園のウェブサイト/SNS">
-
-                    <!-- プライバシーポリシー同意（隠し項目: 同意する） -->
-                    <input type="hidden" name="entry.1820255308" value="同意する">
-
-                    <div class="form-submit reveal-up delay-400">
-                        <button type="submit" class="btn-primary">送信する</button>
-                    </div>
-                </form>
-
-                <!-- Hidden iframe to prevent redirect -->
-                <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"
-                    onload="if(submitted) {window.location='thanks.html';}"></iframe>
-                <script>var submitted = false;</script>
-
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer">
-        <div class="container footer-container">
-            <div class="footer-logo">米良氣農園</div>
-            <ul class="footer-nav">
-                <li><a href="#concept">こだわり</a></li>
-                <li><a href="#products">商品紹介</a></li>
-                <li><a href="https://note.com/meraki_noen" target="_blank">農園日誌 (note)</a></li>
-                <li><a href="about.html">私たちについて</a></li>
-                <li><a href="terms.html">利用規約</a></li>
-                <li><a href="tokusho.html">特定商取引法に基づく表記</a></li>
-                <li><a href="privacy.html">プライバシーポリシー</a></li>
-            </ul>
-            <div class="copyright">&copy; 2026 Meraki Farm. All Rights Reserved.</div>
+        <!-- PRODUCT Title placed between CONCEPT and scrolling products -->
+        <div class="product-title-block">
+            <h2 class="section-title">PRODUCT</h2>
+            <h3 class="section-lead">大地からの贈りもの</h3>
         </div>
-    </footer>
 
-    <script src="js/script.js"></script>
+        <!-- Scene 2: The Harvest (PRODUCT - Horizontal Scroll Store) -->
+        <!-- This section will be pinned by GSAP -->
+        <section id="harvest" class="scene horizontal-wrapper">
+            <div class="horizontal-container">
+                <!-- Spacer to replace the title card so the first product doesn't scroll away immediately -->
+                <div class="h-item spacer-block" style="width: 100vw;"></div>
+
+                <!-- Product 1 -->
+                <div class="h-item product-card">
+                    <div class="p-image-wrap">
+                        <img src="images/product_koshihikari_v4.jpg" alt="自然栽培コシヒカリ">
+                        <div class="p-glow"></div>
+                    </div>
+                    <div class="p-info">
+                        <h3 class="p-name">自然栽培コシヒカリ</h3>
+                        <p class="p-desc">
+                            毎日食べるものだから、<br>
+                            特別ではなくていい。<br><br>
+
+                            炊きたての湯気の向こうに、<br>
+                            山の水と土の匂いが、<br>
+                            少しだけ残るごはんです。
+                        </p>
+                        <a href="#" class="p-btn">VIEW</a>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="h-item product-card">
+                    <div class="p-image-wrap">
+                        <img src="images/product_black_rice_v4.jpg" alt="古代米">
+                        <div class="p-glow"></div>
+                    </div>
+                    <div class="p-info">
+                        <h3 class="p-name">古代米 (黒米)</h3>
+                        <p class="p-desc">
+                            白いごはんに、<br>
+                            ひとさじだけ混ぜて炊く。<br><br>
+
+                            湯気の中に、少しだけ<br>
+                            山の香りと深い色が混ざります。<br><br>
+
+                            特別なごはんではなく、<br>
+                            毎日のごはんに、少しだけ季節を足すための米です。
+                        </p>
+                        <a href="#" class="p-btn">VIEW</a>
+                    </div>
+                </div>
+
+                <!-- Store Link -->
+                <div class="h-item store-link-card">
+                    <a href="#" class="circle-link">
+                        <span>Online<br>Store</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scene 3: The Soil (ABOUT) -->
+        <section id="soil" class="scene left-scene">
+            <div class="content-left">
+                <h2 class="section-title">ABOUT</h2>
+                <h3 class="section-lead">
+                    米に良い氣を込めて</h3>
+
+                <!-- Tiny Image inserted here -->
+                <div class="about-image-small">
+                    <img src="images/about_new.jpg" alt="米良氣の米作り">
+                </div>
+
+                <p class="section-desc" style="text-align: left; display: inline-block;">
+                    「自分の子どもに、胸を張って食べさせられるものを作りたい」<br>
+                    それが、米良氣農園を始めた理由です。<br><br>
+
+                    私はもともと農家ではありません。<br>
+                    移住して、試行錯誤しながら米作りを始めました。<br><br>
+
+                    分からないことだらけで、<br>
+                    失敗も沢山しています。<br><br>
+
+                    それでも、<br>
+                    家族が毎日食べるごはんだけは、<br>
+                    ごまかさずに作りたい。<br><br>
+
+                    その思いで、田んぼに向き合っています。
+                </p>
+                <!-- Old image wrapper completely removed -->
+            </div>
+        </section>
+
+        <!-- Scene 4: Journal (Constellation) -->
+        <section id="journal" class="scene constellation-scene">
+            <h2 class="section-title text-center">農園日誌</h2>
+            <div class="constellation-grid">
+                <!-- Star 1 -->
+                <article class="star-node" style="top: 20%; left: 20%;">
+                    <div class="star-point"></div>
+                    <div class="star-content">
+                        <span class="star-date">2026.04.15</span>
+                        <h4 class="star-title">春の訪れと苗作り</h4>
+                    </div>
+                </article>
+                <!-- Line 1-2 -->
+                <div class="constellation-line" style="top: 22%; left: 21%; width: 25%; transform: rotate(15deg);">
+                </div>
+
+                <!-- Star 2 -->
+                <article class="star-node" style="top: 40%; left: 50%;">
+                    <div class="star-point"></div>
+                    <div class="star-content">
+                        <span class="star-date">2026.03.20</span>
+                        <h4 class="star-title">土壌の準備について</h4>
+                    </div>
+                </article>
+                <!-- Line 2-3 -->
+                <div class="constellation-line" style="top: 42%; left: 51%; width: 20%; transform: rotate(45deg);">
+                </div>
+
+                <!-- Star 3 -->
+                <article class="star-node" style="top: 70%; left: 65%;">
+                    <div class="star-point"></div>
+                    <div class="star-content">
+                        <span class="star-date">2026.02.10</span>
+                        <h4 class="star-title">味噌作りWS開催</h4>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Scene 5: Recipe (Placeholder) -->
+        <section id="recipe" class="scene center-scene" style="padding: 100px 0;">
+            <div class="content-center">
+                <h2 class="section-title text-center">RECIPE</h2>
+                <p class="section-desc">※現在準備中です</p>
+            </div>
+        </section>
+
+        <!-- Scene 6: FAQ (Placeholder) -->
+        <section id="faq" class="scene center-scene" style="padding: 100px 0;">
+            <div class="content-center">
+                <h2 class="section-title text-center">FAQ</h2>
+                <p class="section-desc">※現在準備中です</p>
+            </div>
+        </section>
+
+        <!-- Scene 7: Credits (CONTACT) -->
+        <section id="credits" class="scene credits-scene">
+            <div class="credits-roll">
+                <p class="credit-role">Location</p>
+                <p class="credit-name">Gifu, Ena, Nakanoho</p>
+
+                <p class="credit-role">Farmer</p>
+                <p class="credit-name">Meraki Farm</p>
+
+                <p class="credit-role">Philosophy</p>
+                <p class="credit-name">Nature Farming</p>
+
+                <!-- Contact Form Embedded -->
+                <div class="contact-embed">
+                    <a href="mailto:info@merakifarm.jp" class="explore-btn">CONTACT US</a>
+                </div>
+
+                <div class="final-logo">米良氣</div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Fullscreen Overlay Menu -->
+    <div class="fullscreen-menu">
+        <div class="menu-content">
+            <nav class="vertical-nav">
+                <a href="#credits" class="menu-link"><span>お問い合わせ</span></a>
+                <a href="#faq" class="menu-link"><span>FAQ</span></a>
+                <a href="#recipe" class="menu-link"><span>レシピ</span></a>
+                <a href="#journal" class="menu-link"><span>農園日誌</span></a>
+                <a href="#soil" class="menu-link"><span>私たちについて</span></a>
+                <a href="#harvest" class="menu-link"><span>商品紹介</span></a>
+                <a href="#growth" class="menu-link"><span>コンセプト</span></a>
+            </nav>
+            <div class="menu-bg-deco">
+                <img src="images/logo.png" alt="米良氣" class="menu-bg-logo">
+            </div>
+        </div>
+    </div>
+
+    <!-- Script -->
+    <script src="js/cinematic.js"></script>
 </body>
 
 </html>
