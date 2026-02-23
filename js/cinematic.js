@@ -292,9 +292,15 @@ const scrollTween = gsap.to(horizontalContainer, {
 if (isMobile) {
     const items = document.querySelectorAll(".h-item");
     items.forEach((item, i) => {
-        // Item 0 is Title Card: It starts visible
-        if (i === 0) {
+        // Item 0 is Spacer, Item 1 is the first Product (Koshihikari)
+        // Since Koshihikari starts inside the screen, we skip the enter animation so it doesn't get stuck at opacity 0
+        if (i <= 1) {
             gsap.set(item, { opacity: 1 });
+            // Ensure children are fully reset too
+            const imgWrap = item.querySelector(".p-image-wrap");
+            if (imgWrap) gsap.set(imgWrap, { opacity: 1, y: 0, scale: 1 });
+            const info = item.querySelector(".p-info");
+            if (info) gsap.set(info, { opacity: 1, y: 0 });
             return;
         }
 
