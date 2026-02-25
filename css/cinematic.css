@@ -32,7 +32,37 @@
     max-width: 1200px;
 }
 
-/* Washi/Noise Texture Overlay */
+/* Lightweight CSS Noise Alternative */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.05;
+    /* Slightly increased for texture */
+    background-image: repeating-radial-gradient(#000 0 0.0001%, #fff 0 0.0002%);
+    background-size: 100px 100px;
+    mix-blend-mode: overlay;
+}
+
+/* Vignette Effect */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, transparent 40%, rgba(0, 0, 0, 0.15) 100%);
+    pointer-events: none;
+    z-index: 9998;
+}
+
+/* 
 body::after {
     content: "";
     position: fixed;
@@ -46,6 +76,8 @@ body::after {
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     mix-blend-mode: multiply;
 }
+*/
+
 
 body {
     background-color: var(--c-bg);
@@ -55,6 +87,12 @@ body {
     /* Hide scrollbar */
     -ms-overflow-style: none;
     scrollbar-width: none;
+}
+
+@media (max-width: 768px) {
+    body {
+        cursor: auto;
+    }
 }
 
 body::-webkit-scrollbar {
@@ -199,9 +237,9 @@ body::-webkit-scrollbar {
     visibility: hidden;
     transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s;
     /* Faster, smoother transition */
-    backdrop-filter: blur(8px);
-    /* slightly blurrier backend */
-    -webkit-backdrop-filter: blur(8px);
+    /* High performance impact - reduced or disabled */
+    /* backdrop-filter: blur(8px); */
+    /* -webkit-backdrop-filter: blur(8px); */
 }
 
 .fullscreen-menu.active {
@@ -311,6 +349,9 @@ body::-webkit-scrollbar {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    position: relative;
+    z-index: 10;
+    opacity: 1;
 }
 
 .cinematic-nav {
@@ -414,11 +455,13 @@ body::-webkit-scrollbar {
 
 /* Scrolled State (Past Hero) */
 .global-header.scrolled {
-    background-color: rgba(227, 232, 229, 0.3);
+    /* background-color: rgba(227, 232, 229, 0.3); */
+    background-color: rgba(227, 232, 229, 0.85);
+    /* Increased opacity to compensate for no blur */
     /* Even More Transparent */
-    backdrop-filter: blur(10px);
+    /* backdrop-filter: blur(10px); */
     /* Frosted glass effect */
-    -webkit-backdrop-filter: blur(10px);
+    /* -webkit-backdrop-filter: blur(10px); */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     padding: 20px 50px;
     /* Slight shrink for compactness */
@@ -436,39 +479,43 @@ body::-webkit-scrollbar {
 
 /* Scroll Scenes */
 .scene {
-    min-height: auto;
-    /* Removed 100vh default to allow tighter spacing */
-    padding-bottom: 80px;
-    /* Add base bottom spacing */
+    min-height: 100svh;
+    /* Changed to svh for mobile URL bar safety */
+    padding-bottom: 5vh;
+    /* Responsive bottom spacing */
     position: relative;
     display: flex;
+    flex-direction: column;
+    /* Ensure content stacks vertically */
     align-items: center;
     justify-content: center;
+    /* Always center vertically */
 }
 
 #intro {
-    height: 100vh;
-    /* Re-apply strict 100vh so it fills screen initially */
+    height: 100svh;
+    /* Re-apply strict 100svh so it fills screen initially */
     padding-bottom: 0;
 }
 
 .center-scene,
 .left-scene,
 .right-scene {
-    height: auto;
-    /* Removed fixed 100vh height for initial scenes to allow tighter spacing */
+    min-height: 100svh;
+    /* Ensured all scenes default to a full screen height */
 }
 
+/* Modal Open Lock */
+body.modal-open {
+    overflow: hidden !important;
+    touch-action: none;
+    /* Mobile prevent scroll */
+}
+
+/* Removed specific padding-top for #soil and #growth to let flexbox center them */
 #soil,
 #growth {
-    align-items: flex-start;
-    padding-top: 100px;
-    /* Reduced from 150px to tighten up space */
-}
-
-#growth {
-    padding-top: 200px;
-    /* Increased to create more distance from top image */
+    padding-top: 0;
 }
 
 /* PC Layout for ABOUT (Asymmetrical Layout) */
@@ -483,8 +530,8 @@ body::-webkit-scrollbar {
             "image desc";
         column-gap: 80px;
         /* Spacious gap between image/title and text */
-        row-gap: 20px;
-        /* Vertical space between title/lead and image */
+        row-gap: 0;
+        /* Removed uniform row-gap to allow natural spacing */
         align-items: start;
         max-width: 1200px;
         /* Let it breathe a bit wider */
@@ -495,8 +542,7 @@ body::-webkit-scrollbar {
 
     #soil .section-title {
         grid-area: title;
-        margin-bottom: -35px;
-        /* Pull the lead text closer */
+        /* Margin-bottom is inherited from standard .section-title (-1.5vh) to match PRODUCT */
         text-align: center;
         /* Center horizontally over the image area */
         width: 100%;
@@ -527,13 +573,12 @@ body::-webkit-scrollbar {
     #soil .about-image-small {
         grid-area: image;
         width: 100%;
-        /* Reset to 100% */
+        max-width: 40vh;
+        /* Scaled to screen height */
         justify-self: center;
-        /* Center */
         margin-top: 0;
         border-radius: 4px;
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-        /* Float effect */
         overflow: hidden;
     }
 
@@ -597,8 +642,8 @@ body::-webkit-scrollbar {
     #growth .concept-image-slider {
         grid-area: image;
         width: 100%;
-        max-width: 500px;
-        /* Restrict max size so it doesn't look too bulky */
+        max-width: min(500px, 45vh);
+        /* Scale with height */
         justify-self: center;
         margin-top: 0;
     }
@@ -639,7 +684,8 @@ body::-webkit-scrollbar {
     margin-top: 20px;
     margin-bottom: 30px;
     margin-left: auto;
-    /* Push to right slightly to align with right-aligned title, or override in grid */
+    margin-right: auto;
+    /* Center the image exactly under the ABOUT text */
     border-radius: 4px;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
@@ -764,27 +810,26 @@ body::-webkit-scrollbar {
 
 .section-title {
     font-family: var(--font-main);
-    font-size: clamp(2rem, 5vw, 4rem);
-    margin-bottom: -15px;
-    /* Reduced gap to lead */
+    font-size: clamp(2rem, 8vh, 4rem);
+    /* Scale with height */
+    margin-bottom: -1.5vh;
     color: var(--c-gold);
 }
 
 .section-lead {
     font-family: var(--font-main);
-    font-size: 1.5rem;
+    font-size: clamp(1.1rem, 3vh, 1.5rem);
+    /* Scale with height */
     margin-top: 0;
-    /* Eliminate default top gap */
-    margin-bottom: 20px;
+    margin-bottom: 3vh;
     color: var(--c-gold);
-    /* Match ABOUT color */
 }
 
+
 .section-desc {
-    font-size: 0.95rem;
-    /* Smaller text size */
-    line-height: 1.9;
-    /* Tighter line spacing */
+    font-size: clamp(0.85rem, 1.8vh, 0.95rem);
+    /* Scale with height */
+    line-height: 1.8;
     letter-spacing: 0.1em;
     color: rgba(0, 0, 0, 0.8);
 }
@@ -811,25 +856,39 @@ body::-webkit-scrollbar {
 /* Removed conflicting .content-left/.content-right overrides to restore full width */
 
 /* Horizontal Scroll (Harvest) */
+.scene.harvest-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 0vh;
+    /* Reduced padding further */
+    padding-bottom: 2vh;
+}
+
+.spacer-block {
+    width: 20vw;
+    /* Reduced from 60vw to bring first item in faster */
+    height: 10px;
+    /* Prevent collapse */
+}
+
 .horizontal-wrapper {
-    height: 100vh;
+    height: 68vh;
+    /* Slightly more room for vertical breathing */
     width: 100%;
     overflow: hidden;
-    /* Will be pinned */
 }
 
 .horizontal-container {
     display: flex;
     height: 100%;
     width: max-content;
-    /* Dynamic width based on content */
-    align-items: center;
+    align-items: flex-start;
+    padding-top: 2vh;
     padding-left: 0;
-    /* Handled by 100vw spacer now */
     padding-right: 50vw;
-    /* Ensure extra space at the end so it doesn't abruptly stop */
-    gap: 15vw;
-    /* Comfortable breathing room between products */
+    gap: 8vw;
 }
 
 .h-item {
@@ -853,37 +912,37 @@ body::-webkit-scrollbar {
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding-top: 10vh;
-    padding-bottom: 5vh;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
 }
 
-/* Product Cards */
 .product-card {
     position: relative;
-    width: clamp(280px, 50vw, 500px);
-    /* Slightly reduced width to make images a bit smaller */
+    width: min(clamp(320px, 60vw, 550px), 60vh);
+    /* Reduced from 70vh for better height-responsiveness */
+    max-height: 100%;
 }
 
 .p-image-wrap {
     width: 100%;
-    height: auto;
-    /* Removed aspect-ratio constraint so the natural image ratio is used */
+    aspect-ratio: 16 / 9;
     overflow: hidden;
     position: relative;
     border-radius: 4px;
-    margin-bottom: 20px;
+    margin-bottom: 1.5vh;
+    /* Height-responsive margin */
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .p-image-wrap img {
     width: 100%;
-    height: auto;
-    max-height: 60vh;
-    /* Prevent the image from growing taller than the screen height */
-    object-fit: contain;
-    /* Guarantee the entire image width and height is visible inside the box */
+    height: 100%;
+    /* Fill the container */
+    max-height: none;
+    /* Let aspect ratio dictate height */
+    object-fit: cover;
+    /* Crop slightly if necessary to guarantee identical shapes */
     display: block;
-    /* Use natural height, no cropping */
     transition: transform 0.8s ease;
 }
 
@@ -908,15 +967,18 @@ body::-webkit-scrollbar {
 
 .p-name {
     font-family: var(--font-main);
-    margin-bottom: 10px;
+    margin-bottom: 1vh;
+    /* Height-responsive margin */
     font-size: 1.2rem;
     color: #000;
 }
 
 .p-desc {
-    font-size: 0.9rem;
+    font-size: clamp(0.75rem, 1.2vh, 0.9rem);
+    /* Scale font-size with height */
     color: #666;
     margin-bottom: 15px;
+    line-height: 1.7;
 }
 
 .p-btn {
@@ -960,7 +1022,9 @@ body::-webkit-scrollbar {
 /* Constellation Journal */
 .constellation-scene {
     height: 120vh;
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     /* Custom Layout */
     padding-top: 10vh;
 }
@@ -1018,10 +1082,23 @@ body::-webkit-scrollbar {
 
 /* Credits */
 .credits-scene {
-    height: 150vh;
+    min-height: 150vh;
+    /* Changed from height to min-height */
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 100px 0;
+    margin-top: 5vh;
+    /* Ensure separation from FAQ */
+    position: relative;
+    z-index: 1;
+}
+
+#faq {
+    position: relative;
+    z-index: 2;
+    padding: 150px 0;
 }
 
 .credits-roll {
@@ -1042,10 +1119,206 @@ body::-webkit-scrollbar {
 }
 
 .final-logo {
-    margin-top: 100px;
-    font-size: 4rem;
-    font-family: var(--font-main);
+    margin-top: 60px;
     opacity: 0.8;
+}
+
+.final-logo img {
+    height: clamp(4.5rem, 15vh, 6.5rem);
+    /* Further increased for a bold, centered presence */
+    width: auto;
+    display: block;
+    margin: 0 auto;
+    filter: contrast(0.9) brightness(0.9);
+}
+
+/* Farm Info Section */
+.farm-info {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: left;
+    font-family: var(--font-sub);
+}
+
+.info-row {
+    display: flex;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    align-items: baseline;
+}
+
+.info-label {
+    width: 140px;
+    font-size: 0.8rem;
+    color: var(--c-gold);
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+    font-family: var(--font-main);
+}
+
+.info-value {
+    font-size: clamp(0.9rem, 1.8vh, 1rem);
+    line-height: 1.8;
+    color: #444;
+}
+
+@media (max-width: 768px) {
+    .farm-info {
+        padding: 0 5%;
+    }
+
+    .info-row {
+        flex-direction: column;
+        gap: 8px;
+        padding: 15px 0;
+    }
+
+    .info-label {
+        width: 100%;
+    }
+}
+
+/* Footer Bottom (Legal & Copyright) */
+.footer-bottom {
+    margin-top: 50px;
+    padding-bottom: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+.footer-links {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    font-size: 0.85rem;
+    font-family: var(--font-sub);
+}
+
+.footer-links a {
+    color: #888;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    letter-spacing: 0.05em;
+}
+
+.footer-links a:hover {
+    color: var(--c-gold);
+}
+
+.footer-links .separator {
+    color: #ddd;
+    font-size: 0.8rem;
+}
+
+.footer-copyright {
+    font-size: 0.75rem;
+    color: #aaa;
+    letter-spacing: 0.15em;
+    font-family: var(--font-sub);
+    text-transform: uppercase;
+}
+
+body {
+    transition: background-color 0.8s ease-out;
+    /* Smooth JS color changes */
+}
+
+/* Cinematic Contact Form */
+.contact-section-container {
+    max-width: 650px;
+    margin: 100px auto 0;
+    text-align: left;
+    padding: 0 20px;
+}
+
+.contact-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.cinematic-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    color: #555;
+    font-family: var(--font-main);
+}
+
+.form-group .required {
+    color: #e74c3c;
+    font-size: 0.8rem;
+    margin-left: 2px;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: var(--font-sub);
+    font-size: 1rem;
+    background-color: #fff;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--c-gold);
+    box-shadow: 0 0 5px rgba(212, 175, 55, 0.2);
+}
+
+.form-agreement {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 10px;
+}
+
+.form-agreement input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.form-submit {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.contact-success-msg {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: rgba(212, 175, 55, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.contact-success-msg p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 30px;
+}
+
+@media (max-width: 768px) {
+    .contact-section-container {
+        margin-top: 60px;
+    }
 }
 
 .explore-btn {
@@ -1064,7 +1337,128 @@ body::-webkit-scrollbar {
     color: #000;
 }
 
-/* Mobile */
+/* Journal note.com Integration Styles */
+.constellation-bg-layer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0.3;
+    /* Subtle background decorative lines */
+    pointer-events: none;
+}
+
+.article-gallery {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* Fixed 3 columns for better asymmetry control */
+    gap: 40px;
+    width: 90%;
+    max-width: 1000px;
+    margin: 80px auto 0;
+    align-items: start;
+}
+
+.gallery-placeholder {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 100px 0;
+    font-family: var(--font-main);
+    letter-spacing: 0.2em;
+    opacity: 0.6;
+}
+
+/* Removed legacy vertical-only styles to allow horizontal alignment */
+.article-card {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    /* width: min(100%, 35vh);  -- REMOVED to allow .product-card to take over */
+    margin: 0 auto;
+}
+
+/* Asymmetric staggering removed for horizontal scroll consistency */
+
+/* Recipe Cards in Horizontal Scroll */
+.article-card {
+    transition: transform 0.3s ease;
+}
+
+.article-card .article-thumb {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 4px;
+    margin-bottom: 1.5vh;
+    /* Height-responsive margin */
+}
+
+.article-card .article-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Maintain cinematic uniform crop */
+    transition: transform 0.8s ease;
+}
+
+.article-card:hover .article-thumb img {
+    transform: scale(1.1);
+}
+
+.article-content {
+    padding: 20px 18px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.article-card-date {
+    font-size: 0.65rem;
+    color: var(--c-gold);
+    margin-bottom: 1vh;
+    /* Height-responsive margin */
+    display: block;
+    letter-spacing: 0.2em;
+    opacity: 0.8;
+}
+
+.article-card-title {
+    font-family: "Shippori Mincho", "Noto Serif JP", serif;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #3a3a3a;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-clamp: 2;
+    overflow: hidden;
+    font-weight: 500;
+}
+
+.article-card:hover .article-card-title {
+    color: #000;
+}
+
+/* Add a subtle number/index for style */
+.article-card::before {
+    content: "0" attr(data-index);
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 0.6rem;
+    color: var(--c-gold);
+    opacity: 0.4;
+    letter-spacing: 0.1em;
+    z-index: 10;
+}
+
+/* Mobile Adjustments */
 @media (max-width: 768px) {
 
     .content-left,
@@ -1085,59 +1479,23 @@ body::-webkit-scrollbar {
 
     .h-item {
         width: 100vw;
-        /* 1 screen = 1 item */
         height: 100%;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
-        padding: 0 10vw;
-        /* internal spacing */
+        padding: 5vh 10vw 0;
         opacity: 0.2;
-        /* Fade in effect base */
         transition: opacity 0.5s;
     }
 
-    .title-card {
-        width: 100vw;
-        margin-bottom: 0;
-    }
-
-    .product-card {
-        width: 100%;
-        max-width: 350px;
-    }
-
-    .product-card {
-        width: 80vw;
-    }
-
-    .constellation-grid {
-        height: auto;
-        display: flex;
-        flex-direction: column;
-        gap: 40px;
-        padding: 0 20px;
-    }
-
-    .star-node {
-        position: relative;
-        top: auto !important;
-        left: auto !important;
-        width: 100%;
-        border-left: 1px solid rgba(255, 255, 255, 0.2);
-        padding-left: 20px;
-    }
-
-    .constellation-line {
+    .article-gallery {
         display: none;
     }
 
-    /* Hide lines on mobile */
-    .star-point {
-        position: absolute;
-        left: -5px;
-        top: 0;
+    .constellation-bg-layer {
+        display: none;
+        /* Hide lines on mobile for cleaner look */
     }
 }
 
@@ -1161,5 +1519,507 @@ body::-webkit-scrollbar {
 
     50% {
         opacity: 0.8
+    }
+}
+
+/* Standardize padding for all scenes to be height-responsive */
+.scene {
+    padding-top: 10vh;
+    padding-bottom: 10vh;
+}
+
+/* Ensure placeholder content is centered and scaled */
+.center-scene {
+    text-align: center;
+    width: 100%;
+}
+
+/* Mobile Adjustments (continued) */
+@media (max-width: 768px) {
+    .section-lead {
+        font-size: 1.1rem;
+    }
+
+    .scene {
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+}
+
+/* Meraki Dictionary Modal */
+.meraki-dict-btn {
+    display: inline-block;
+    padding: 8px 0;
+    font-size: 0.9rem;
+    color: var(--c-gold, #b89555);
+    text-decoration: none;
+    border-bottom: 1px solid var(--c-gold, #b89555);
+    letter-spacing: 0.1em;
+    transition: opacity 0.3s;
+}
+
+.meraki-dict-btn:hover {
+    opacity: 0.6;
+}
+
+.dict-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #faf9f6;
+    /* Very simple, elegant whitish-greige */
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overscroll-behavior: contain;
+}
+
+.dict-modal.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.dict-content-wrapper {
+    width: 90%;
+    height: 85%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Vertical Text Container */
+.dict-vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    font-family: "Shippori Mincho", "Noto Serif JP", serif;
+    color: #2a2a2a;
+    height: 100%;
+    max-height: 85vh;
+    /* Responsive max-height */
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+    /* Allows text cols to wrap horizontally */
+    overflow-x: auto;
+    /* Scroll horizontally if it exceeds viewport */
+    padding: 20px 0;
+}
+
+/* Adjustments for WebKit text orientation */
+.dict-vertical-text * {
+    -webkit-text-orientation: upright;
+    text-orientation: upright;
+}
+
+.dict-header {
+    margin-right: 40px;
+    /* Space on right side in vertical layout */
+}
+
+.dict-title {
+    font-size: clamp(1.6rem, 4.5vh, 2.2rem);
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    margin: 0;
+}
+
+.dict-ruby {
+    font-size: clamp(0.7rem, 1.5vh, 0.85rem);
+    color: #777;
+    margin-top: 15px;
+    /* Spacing down the vertical line */
+    display: inline-block;
+}
+
+.dict-entry {
+    margin-right: clamp(15px, 3vw, 30px);
+    /* Reduced from 20px-40px */
+}
+
+.dict-num {
+    font-size: clamp(0.9rem, 2vh, 1.1rem);
+    font-weight: bold;
+    margin-bottom: 5px;
+    /* Reduced from 15px */
+    display: inline-block;
+}
+
+.dict-entry p {
+    font-size: clamp(0.9rem, 1.9vh, 1.05rem);
+    line-height: 2.0;
+    /* Reduced from 2.2 */
+    /* Wide elegant line height */
+    letter-spacing: 0.12em;
+    margin: 0;
+}
+
+.dict-quote {
+    margin-right: clamp(30px, 6vw, 70px);
+    /* Significant gap before the concluding sentence */
+    font-size: clamp(1rem, 2.5vh, 1.2rem);
+    letter-spacing: 0.2em;
+}
+
+/* Close Button */
+.dict-close {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    z-index: 10000;
+}
+
+.dict-close span {
+    position: absolute;
+    top: 50%;
+    left: 20%;
+    width: 60%;
+    height: 1px;
+    background-color: #333;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dict-close span:nth-child(1) {
+    transform: rotate(45deg);
+}
+
+.dict-close span:nth-child(2) {
+    transform: rotate(-45deg);
+}
+
+.dict-close:hover span:nth-child(1) {
+    transform: rotate(135deg);
+}
+
+.dict-close:hover span:nth-child(2) {
+    transform: rotate(45deg);
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .dict-vertical-text {
+        max-height: 500px;
+    }
+
+    .dict-title {
+        font-size: 1.6rem;
+    }
+
+    .dict-entry {
+        margin-right: 25px;
+    }
+
+    .dict-num {
+        font-size: 1rem;
+    }
+
+    .dict-entry p {
+        font-size: 0.85rem;
+        line-height: 2;
+    }
+
+    .dict-quote {
+        font-size: 1rem;
+        margin-right: 40px;
+    }
+}
+
+/* Recipe Detail Button (Based on Meraki Dictionary style) */
+.recipe-detail-btn {
+    display: inline-block;
+    padding: 8px 0;
+    font-size: 0.9rem;
+    color: var(--c-gold, #b89555);
+    text-decoration: none;
+    border-bottom: 1px solid var(--c-gold, #b89555);
+    letter-spacing: 0.1em;
+    transition: opacity 0.3s;
+    cursor: pointer;
+}
+
+.recipe-detail-btn:hover {
+    opacity: 0.6;
+}
+
+/* Recipe Modal (Horizontal Text Layout) */
+.recipe-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: rgba(255, 255, 255, 0.98);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    /* Changed from center to allow scroll from top */
+    overflow-y: auto;
+    /* Enable scroll on the modal itself */
+    padding: 60px 0;
+    -webkit-overflow-scrolling: touch;
+    /* Smooth iOS scroll */
+    overscroll-behavior: contain;
+    /* Prevent background scroll chaining */
+}
+
+.recipe-modal.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.recipe-content-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: auto 0;
+    /* Centering when content is short */
+}
+
+.recipe-detail-content {
+    max-width: 950px;
+    width: 90%;
+    /* Removed max-height and overflow-y to let parent handle it */
+    font-family: "Shippori Mincho", "Noto Serif JP", serif;
+    color: #2a2a2a;
+    padding: 30px 40px;
+}
+
+.recipe-header {
+    margin-bottom: 25px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+    text-align: center;
+}
+
+.recipe-tag {
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    color: var(--c-gold);
+    display: block;
+    margin-bottom: 10px;
+}
+
+.recipe-title {
+    font-size: clamp(1.8rem, 5vh, 2.4rem);
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    margin: 0;
+}
+
+.recipe-grid-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: clamp(20px, 4vw, 40px);
+}
+
+.recipe-sub {
+    font-size: clamp(1.1rem, 2.5vh, 1.2rem);
+    border-left: 3px solid var(--c-gold);
+    padding-left: 15px;
+    margin-bottom: 25px;
+    letter-spacing: 0.1em;
+}
+
+.step-list {
+    padding-left: 20px;
+    margin: 0;
+}
+
+.step-list li {
+    margin-bottom: 15px;
+    line-height: 1.6;
+    font-size: clamp(0.95rem, 2vh, 1.05rem);
+}
+
+.step-note {
+    font-size: 0.9rem;
+    color: #666;
+    display: block;
+    margin-top: 4px;
+}
+
+.tip-list {
+    list-style: none;
+    padding: 0;
+}
+
+.tip-list li {
+    position: relative;
+    padding-left: 20px;
+    margin-bottom: 15px;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+.tip-list li::before {
+    content: "・";
+    position: absolute;
+    left: 0;
+    color: var(--c-gold);
+}
+
+/* Close Button (Matching dict-close) */
+.recipe-close {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    z-index: 10000;
+}
+
+.recipe-close span {
+    position: absolute;
+    top: 50%;
+    left: 20%;
+    width: 60%;
+    height: 1px;
+    background-color: #333;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.recipe-close span:nth-child(1) {
+    transform: rotate(45deg);
+}
+
+.recipe-close span:nth-child(2) {
+    transform: rotate(-45deg);
+}
+
+.recipe-close:hover span:nth-child(1) {
+    transform: rotate(135deg);
+}
+
+.recipe-close:hover span:nth-child(2) {
+    transform: rotate(45deg);
+}
+
+/* Scrollbar for modal content */
+.recipe-detail-content::-webkit-scrollbar {
+    width: 4px;
+}
+
+.recipe-detail-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.recipe-detail-content::-webkit-scrollbar-thumb {
+    background: #ccc;
+}
+
+/* Mobile Adjustments for Recipe Modal */
+@media (max-width: 768px) {
+    .recipe-grid-layout {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .recipe-title {
+        font-size: 1.8rem;
+    }
+
+    .recipe-detail-content {
+        padding: 60px 20px 40px;
+    }
+}
+
+/* Horizontal Scroll Styles */
+.horizontal-wrapper {
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    width: 100%;
+    /* To prevent horizontal scrolling of the whole page */
+}
+
+.horizontal-container {
+    display: flex;
+    flex-wrap: nowrap;
+    width: max-content;
+}
+
+.h-item {
+    flex: 0 0 auto;
+    margin-right: 2vw;
+    /* Adjust depending on spacing requirement */
+}
+
+/* Ensure sections holding horizontal wrappers stack their children vertically */
+.harvest-section {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+/* Spacer block to push the first item into view or offscreen as desired */
+.spacer-block {
+    width: 25vw;
+}
+
+/* FAQ Modal Styles */
+.faq-list {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    writing-mode: horizontal-tb;
+    /* Explicitly horizontal */
+}
+
+.faq-item {
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.faq-item:last-child {
+    border-bottom: none;
+}
+
+.faq-question {
+    font-size: clamp(1.1rem, 2.5vh, 1.3rem);
+    font-weight: 600;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    line-height: 1.4;
+    color: var(--c-text);
+}
+
+.faq-question span {
+    color: var(--c-gold);
+    font-family: var(--font-main);
+    font-size: 1.3rem;
+}
+
+.faq-answer {
+    font-size: clamp(0.9rem, 1.8vh, 1rem);
+    line-height: 1.8;
+    color: #444;
+    padding-left: 32px;
+    /* Align with text after Q. */
+}
+
+@media (max-width: 768px) {
+    .faq-question {
+        font-size: 1.1rem;
+    }
+
+    .faq-answer {
+        font-size: 0.95rem;
+        padding-left: 28px;
     }
 }

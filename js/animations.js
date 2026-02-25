@@ -2,7 +2,7 @@
 gsap.registerPlugin(ScrollTrigger);
 
 document.addEventListener("DOMContentLoaded", () => {
-    
+
     // 1. Loading Sequence
     const initLoader = () => {
         const tl = gsap.timeline({
@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         tl.to(".loader-text", { opacity: 1, duration: 1, ease: "power2.out" })
-          .to(".loader", { opacity: 0, duration: 1, delay: 0.5 });
+            .to(".loader", { opacity: 0, duration: 1, delay: 0.5 });
     };
 
     // 2. Hero Animations (After Loader)
@@ -28,23 +28,23 @@ document.addEventListener("DOMContentLoaded", () => {
             stagger: 0.2,
             ease: "power3.out"
         })
-        .from(".hero-sub", {
-            y: 20,
-            opacity: 0,
-            duration: 1,
-            ease: "power2.out"
-        }, "-=0.5")
-        .from(".scroll-prompt", {
-            opacity: 0,
-            duration: 1
-        }, "-=0.5");
+            .from(".hero-sub", {
+                y: 20,
+                opacity: 0,
+                duration: 1,
+                ease: "power2.out"
+            }, "-=0.5")
+            .from(".scroll-prompt", {
+                opacity: 0,
+                duration: 1
+            }, "-=0.5");
     };
 
     // 3. Scroll Reveal Animations (General)
     const revealElements = document.querySelectorAll(".reveal-up, .reveal-text");
-    
+
     revealElements.forEach(elem => {
-        gsap.fromTo(elem, 
+        gsap.fromTo(elem,
             { y: 50, opacity: 0 },
             {
                 y: 0,
@@ -97,6 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
         repeat: -1
     });
 
+
     // Initialize
     initLoader();
 
@@ -105,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // Mobile Menu Toggle (Simple JS)
 const menuTrigger = document.querySelector('.menu-trigger');
 // Add mobile menu logic if overlay is needed, currently just placeholder
-if(menuTrigger) {
+if (menuTrigger) {
     menuTrigger.addEventListener('click', () => {
         alert('Mobile menu to be implemented');
     });

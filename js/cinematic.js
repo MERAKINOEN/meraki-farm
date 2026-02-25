@@ -4,11 +4,13 @@ const lenis = new Lenis({
     smoothWheel: true
 });
 
+// Synchronize ScrollTrigger with Lenis
+lenis.on('scroll', ScrollTrigger.update);
+
 function raf(time) {
     lenis.raf(time);
     requestAnimationFrame(raf);
 }
-requestAnimationFrame(raf);
 requestAnimationFrame(raf);
 
 // ==========================================================================
@@ -261,121 +263,108 @@ gsap.fromTo("#growth .concept-desc",
     }
 );
 
-// 4. HARVEST: Horizontal Scroll
-// Particles color shift removed
+// 4. Horizontal Scroll (HARVEST & RECIPE)
+const horizontalSections = [
+    { section: "#harvest", container: "#harvest-scroll .horizontal-container" },
+    { section: "#recipe", container: "#recipe-scroll .horizontal-container" }
+];
 
-// Pin and Slide (Container Based)
-const harvestSection = document.querySelector("#harvest");
-const horizontalContainer = document.querySelector(".horizontal-container");
+horizontalSections.forEach(config => {
+    const section = document.querySelector(config.section);
+    const container = document.querySelector(config.container);
+    if (!section || !container) return;
 
-// Calculate scroll amount: Total width - Viewport width
-function getScrollAmount() {
-    // Add extra buffer (e.g., 50px or 10vw) to ensure we reach the end
-    let race = horizontalContainer.scrollWidth - window.innerWidth;
-    return -(race + 50);
-}
-
-const scrollTween = gsap.to(horizontalContainer, {
-    x: getScrollAmount, // Functional value for responsiveness
-    ease: "none",
-    scrollTrigger: {
-        trigger: "#harvest",
-        pin: true,
-        scrub: 1,
-        end: () => "+=" + (horizontalContainer.scrollWidth * 1.5), // Scale scroll speed automatically based on total width
-        invalidateOnRefresh: true
+    function getScrollAmount() {
+        let race = container.scrollWidth - window.innerWidth;
+        console.log(`Scroll amount for ${config.section}:`, -(race + 50), 'ScrollWidth:', container.scrollWidth);
+        return -(race + 50);
     }
-});
 
-// Mobile "Float Up" Animations (Container Animation)
-// First, ensure all items start visible by default to prevent stuck opacity issues on any device.
-const allItems = document.querySelectorAll(".h-item");
-allItems.forEach((item, i) => {
-    // Spacer and Koshihikari MUST start visible because they are immediately on screen.
-    if (i <= 1) {
-        gsap.set(item, { opacity: 1 });
-        const imgWrap = item.querySelector(".p-image-wrap");
-        if (imgWrap) gsap.set(imgWrap, { opacity: 1 });
-        const info = item.querySelector(".p-info");
-        if (info) gsap.set(info, { opacity: 1 });
-    }
-});
-
-if (isMobile) {
-    const items = document.querySelectorAll(".h-item");
-    items.forEach((item, i) => {
-        // Item 0 is Spacer, Item 1 is the first Product (Koshihikari)
-        // Since Koshihikari starts inside the screen, we skip the enter animation so it doesn't get stuck at opacity 0
-        if (i <= 1) {
-            gsap.set(item, { opacity: 1 });
-            // Ensure children are fully reset too
-            const imgWrap = item.querySelector(".p-image-wrap");
-            if (imgWrap) gsap.set(imgWrap, { opacity: 1, y: 0, scale: 1 });
-            const info = item.querySelector(".p-info");
-            if (info) gsap.set(info, { opacity: 1, y: 0 });
-            return;
+    const scrollTween = gsap.to(container, {
+        x: getScrollAmount,
+        ease: "none",
+        scrollTrigger: {
+            trigger: config.section,
+            pin: true,
+            pinType: "fixed",
+            scrub: 1,
+            end: () => "+=" + (container.scrollWidth * 1.2),
+            invalidateOnRefresh: true
         }
-
-        // Items 1+: Enter from right
-
-        // Image Fade In & Up
-        const imgWrap = item.querySelector(".p-image-wrap");
-        if (imgWrap) {
-            gsap.fromTo(imgWrap,
-                { opacity: 0, y: 50, scale: 0.95 },
-                {
-                    opacity: 1, y: 0, scale: 1,
-                    ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: item,
-                        containerAnimation: scrollTween,
-                        start: "left 100%", // Start animating as soon as it enters viewport
-                        end: "center 60%", // Finished by the time it's centered
-                        scrub: 1,
-                        id: `img-${i}`
-                    }
-                }
-            );
-        }
-
-        // Text Fade In & Up (Staggered)
-        const info = item.querySelector(".p-info");
-        if (info) {
-            gsap.fromTo(info,
-                { opacity: 0, y: 30 },
-                {
-                    opacity: 1, y: 0,
-                    ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: item,
-                        containerAnimation: scrollTween,
-                        start: "left 80%", // Starts slightly after image
-                        end: "center 50%",
-                        scrub: 1,
-                        id: `info-${i}`
-                    }
-                }
-            );
-        }
-
-        // Base Opacity for the wrapper
-        // fade in from 0.2 to 1 as it centers
-        gsap.fromTo(item,
-            { opacity: 0.2 },
-            {
-                opacity: 1,
-                scrollTrigger: {
-                    trigger: item,
-                    containerAnimation: scrollTween,
-                    start: "left 90%",
-                    end: "center center",
-                    scrub: true,
-                    toggleActions: "play reverse play reverse"
-                }
-            }
-        );
     });
-}
+
+    console.log(`Initialized ScrollTrigger for ${config.section}`);
+
+    // Mobile "Float Up" Animations
+    if (isMobile) {
+        const items = container.querySelectorAll(".h-item");
+        items.forEach((item, i) => {
+            // Spacer and Koshihikari MUST start visible because they are immediately on screen.
+            // For recipe, the first item is also immediately visible.
+            if (i <= 1) {
+                gsap.set(item, { opacity: 1 });
+                // Ensure children are fully reset too
+                const imgWrap = item.querySelector(".p-image-wrap, .article-thumb");
+                if (imgWrap) gsap.set(imgWrap, { opacity: 1, y: 0, scale: 1 });
+                const info = item.querySelector(".p-info, .article-content");
+                if (info) gsap.set(info, { opacity: 1, y: 0 });
+                return;
+            }
+
+            const imgWrap = item.querySelector(".p-image-wrap, .article-thumb");
+            if (imgWrap) {
+                gsap.fromTo(imgWrap,
+                    { opacity: 0, y: 50, scale: 0.95 },
+                    {
+                        opacity: 1, y: 0, scale: 1,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: item,
+                            containerAnimation: scrollTween,
+                            start: "left 100%",
+                            end: "center 60%",
+                            scrub: 1
+                        }
+                    }
+                );
+            }
+
+            const info = item.querySelector(".p-info, .article-content");
+            if (info) {
+                gsap.fromTo(info,
+                    { opacity: 0, y: 30 },
+                    {
+                        opacity: 1, y: 0,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: item,
+                            containerAnimation: scrollTween,
+                            start: "left 80%",
+                            end: "center 50%",
+                            scrub: 1
+                        }
+                    }
+                );
+            }
+
+            gsap.fromTo(item,
+                { x: 200, opacity: 0 },
+                {
+                    x: 0,
+                    opacity: 1,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: item,
+                        containerAnimation: scrollTween,
+                        start: "left 90%",
+                        end: "center center",
+                        scrub: true
+                    }
+                }
+            );
+        });
+    }
+});
 
 
 // 5. Constellation & Credits
@@ -397,7 +386,9 @@ const tick = () => {
     const time = clock.getElapsedTime();
 
     // Rotate (Slower, Organic)
-    grainMesh.rotation.y = time * 0.05;
+    if (typeof grainMesh !== 'undefined' && grainMesh) {
+        grainMesh.rotation.y = time * 0.05;
+    }
     // particlesMesh.rotation.y = Math.sin(time * 0.1) * 0.2;
 
     // Mouse Parallax (Dampened)
@@ -440,4 +431,281 @@ function updateNav(index) {
 // Ensure ScrollTrigger uses correct dimensions after load
 window.addEventListener('load', () => {
     ScrollTrigger.refresh();
+});
+
+// --- Meraki Dictionary \u0026 Recipe Overlays ---
+document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('click', (e) => {
+        // Open Dictionary Modal
+        // Open Dictionary Modal
+        if (e.target && e.target.id === 'openDictBtn') {
+            e.preventDefault();
+            const dictModal = document.getElementById('merakiDictModal');
+            if (dictModal) {
+                dictModal.classList.add('active');
+                document.body.classList.add('modal-open');
+                if (typeof lenis !== 'undefined') lenis.stop();
+            }
+        }
+
+        // Open Recipe Modal
+        if (e.target && e.target.classList.contains('recipe-detail-btn')) {
+            e.preventDefault();
+            const recipeId = e.target.getAttribute('data-recipe');
+            const modalId = recipeId + 'Modal';
+            const recipeModal = document.getElementById(modalId);
+            if (recipeModal) {
+                recipeModal.classList.add('active');
+                document.body.classList.add('modal-open');
+                if (typeof lenis !== 'undefined') lenis.stop();
+            }
+        }
+
+        // Open Black Rice Power Modal
+        if (e.target && (e.target.id === 'openBlackRiceBtn' || e.target.closest('#openBlackRiceBtn'))) {
+            e.preventDefault();
+            const powerModal = document.getElementById('blackRicePowerModal');
+            if (powerModal) {
+                powerModal.classList.add('active');
+                document.body.classList.add('modal-open');
+                if (typeof lenis !== 'undefined') lenis.stop();
+            }
+        }
+
+        // Open FAQ Modal
+        if (e.target && (e.target.id === 'openFaqBtn' || e.target.closest('#openFaqBtn'))) {
+            e.preventDefault();
+            const faqModal = document.getElementById('faqModal');
+            if (faqModal) {
+                faqModal.classList.add('active');
+                document.body.classList.add('modal-open');
+                if (typeof lenis !== 'undefined') lenis.stop();
+            }
+        }
+
+        // Open Terms of Use Modal
+        if (e.target && (e.target.id === 'openTermsBtn' || e.target.closest('#openTermsBtn'))) {
+            e.preventDefault();
+            const termsModal = document.getElementById('termsModal');
+            if (termsModal) {
+                termsModal.classList.add('active');
+                document.body.classList.add('modal-open');
+                if (typeof lenis !== 'undefined') lenis.stop();
+            }
+        }
+
+        // Open Privacy Policy Modal
+        if (e.target && (e.target.id === 'openPrivacyBtn' || e.target.closest('#openPrivacyBtn'))) {
+            e.preventDefault();
+            const privacyModal = document.getElementById('privacyModal');
+            if (privacyModal) {
+                privacyModal.classList.add('active');
+                document.body.classList.add('modal-open');
+                if (typeof lenis !== 'undefined') lenis.stop();
+            }
+        }
+
+        // Open Specified Commercial Transactions Modal
+        if (e.target && (e.target.id === 'openSectaBtn' || e.target.closest('#openSectaBtn'))) {
+            e.preventDefault();
+            const sectaModal = document.getElementById('sectaModal');
+            if (sectaModal) {
+                sectaModal.classList.add('active');
+                document.body.classList.add('modal-open');
+                if (typeof lenis !== 'undefined') lenis.stop();
+            }
+        }
+
+        // Close Dictionary Modal
+        if (e.target && (
+            e.target.id === 'dictCloseBtn' ||
+            e.target.closest('#dictCloseBtn') ||
+            e.target.classList.contains('dict-content-wrapper') ||
+            e.target.classList.contains('dict-modal')
+        )) {
+            const dictModal = document.getElementById('merakiDictModal');
+            if (dictModal && dictModal.classList.contains('active')) {
+                dictModal.classList.remove('active');
+                document.body.classList.remove('modal-open');
+                if (typeof lenis !== 'undefined') lenis.start();
+            }
+        }
+
+        // Close Black Rice Power Modal
+        if (e.target && (
+            e.target.id === 'powerCloseBtn' ||
+            e.target.closest('#powerCloseBtn') ||
+            (e.target.classList.contains('dict-modal') && e.target.id === 'blackRicePowerModal')
+        )) {
+            const powerModal = document.getElementById('blackRicePowerModal');
+            if (powerModal && powerModal.classList.contains('active')) {
+                powerModal.classList.remove('active');
+                document.body.classList.remove('modal-open');
+                if (typeof lenis !== 'undefined') lenis.start();
+            }
+        }
+
+        // Close Recipe Modal
+        if (e.target && (
+            e.target.classList.contains('recipe-close') ||
+            e.target.closest('.recipe-close') ||
+            e.target.classList.contains('recipe-content-wrapper') ||
+            e.target.classList.contains('recipe-modal')
+        )) {
+            const activeModal = document.querySelector('.recipe-modal.active');
+            if (activeModal) {
+                activeModal.classList.remove('active');
+                document.body.classList.remove('modal-open');
+                if (typeof lenis !== 'undefined') lenis.start();
+            }
+        }
+    });
+
+    // Preventive scroll isolation inside modals
+    const modalElements = document.querySelectorAll('.recipe-modal, .dict-modal');
+    modalElements.forEach(modal => {
+        modal.addEventListener('wheel', (e) => {
+            e.stopPropagation();
+        }, { passive: false });
+
+        modal.addEventListener('touchmove', (e) => {
+            e.stopPropagation();
+        }, { passive: false });
+    });
+});
+
+// --- note.com RSS Integration ---
+async function fetchNoteArticles() {
+    const container = document.getElementById('note-article-container');
+    const rssUrl = "https://note.com/meraki_noen/rss";
+    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(rssUrl)}`;
+
+    try {
+        const response = await fetch(proxyUrl);
+        const xmlText = await response.text();
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlText, "text/xml");
+        const items = xmlDoc.querySelectorAll("item");
+
+        if (items.length > 0) {
+            container.innerHTML = '';
+            const count = Math.min(items.length, 3);
+
+            for (let i = 0; i < count; i++) {
+                const item = items[i];
+                const title = item.querySelector("title").textContent;
+                const link = item.querySelector("link").textContent;
+                const pubDate = item.querySelector("pubDate").textContent;
+
+                // Extract Thumbnail from <media:thumbnail>
+                let thumbnail = '';
+                const mediaThumb = item.getElementsByTagName("media:thumbnail")[0] || item.getElementsByTagName("thumbnail")[0];
+                if (mediaThumb) {
+                    thumbnail = mediaThumb.getAttribute("url") || mediaThumb.textContent;
+                }
+
+                // If still no thumbnail, try extraction from description
+                if (!thumbnail || thumbnail.includes('profile_images')) {
+                    const description = item.querySelector("description").textContent;
+                    const imgMatch = description.match(/<img[^>]+src="([^">]+)"/);
+                    if (imgMatch && !imgMatch[1].includes('profile_images')) {
+                        thumbnail = imgMatch[1];
+                    } else {
+                        thumbnail = 'images/hero_landscape.jpg';
+                    }
+                }
+
+                const date = new Date(pubDate);
+                const formattedDate = date.toLocaleDateString('ja-JP', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit'
+                }).split('/').join('.');
+
+                const card = document.createElement('a');
+                card.href = link;
+                card.target = '_blank';
+                card.className = 'article-card';
+                card.setAttribute('data-index', i + 1);
+                card.innerHTML = `
+                    <div class="article-thumb">
+                        <img src="${thumbnail}" alt="${title}" loading="lazy">
+                    </div>
+                    <div class="article-content">
+                        <div>
+                            <span class="article-card-date">${formattedDate}</span>
+                            <h4 class="article-card-title">${title}</h4>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+
+                // Add slight floating animation staggered
+                gsap.to(card, {
+                    y: 10,
+                    duration: 2 + Math.random() * 2,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut",
+                    delay: i * 0.5
+                });
+            }
+            ScrollTrigger.refresh();
+        } else {
+            container.innerHTML = '<div class="gallery-placeholder">記事が見つかりませんでした。</div>';
+        }
+    } catch (error) {
+        console.error('Error fetching note articles:', error);
+        container.innerHTML = '<div class="gallery-placeholder">記事を読み込めませんでした。</div>';
+    }
+}
+
+
+// Contact Form Submission Handling
+let submitted = false;
+window.showContactSuccess = function () {
+    if (submitted) {
+        document.getElementById('contactForm').style.display = 'none';
+        document.getElementById('contactSuccess').style.display = 'block';
+
+        // Scroll to success message
+        document.getElementById('contactSuccess').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+};
+
+window.resetContactForm = function () {
+    submitted = false;
+    document.getElementById('contactForm').reset();
+    document.getElementById('contactForm').style.display = 'flex';
+    document.getElementById('contactSuccess').style.display = 'none';
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    fetchNoteArticles();
+
+    // ==========================================================================
+    // FINAL BACKGROUND TRANSITION
+    // ==========================================================================
+    // Background Color and Fog Transition
+    ScrollTrigger.create({
+        trigger: "#credits",
+        start: "top bottom",
+        end: "bottom bottom",
+        scrub: true,
+        onUpdate: (self) => {
+            const progress = self.progress;
+            // Interpolate background color
+            // From #f2f5f3 (rgb 242, 245, 243) to #ffffff
+            const r = Math.floor(242 + (255 - 242) * progress);
+            const g = Math.floor(245 + (255 - 245) * progress);
+            const b = Math.floor(243 + (255 - 243) * progress);
+            const bgColor = `rgb(${r}, ${g}, ${b})`;
+            document.body.style.backgroundColor = bgColor;
+
+            // Sync Three.js Fog
+            if (typeof scene !== 'undefined' && scene.fog) {
+                scene.fog.color.setRGB(r / 255, g / 255, b / 255);
+            }
+        }
+    });
 });

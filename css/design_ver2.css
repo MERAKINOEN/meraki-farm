@@ -43,7 +43,7 @@ body {
     background-color: var(--c-bg);
     color: var(--c-text);
     line-height: 2;
-    overflow-x: hidden;
+    overflow-x: visible;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -153,6 +153,8 @@ img {
     padding: 15vh 0;
     /* Huge airy padding */
 }
+
+
 
 @media (max-width: 768px) {
     .section {

@@ -15,7 +15,7 @@
         rel="stylesheet">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="css/cinematic.css">
+    <link rel="stylesheet" href="css/cinematic.css?v=2.1">
 
     <!-- Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -28,6 +28,7 @@
 
     <!-- Immersive WebGL Canvas -->
     <canvas id="world"></canvas>
+
 
     <!-- Global Header (Sticky, Fades in) -->
     <header id="global-header" class="global-header">
@@ -62,7 +63,7 @@
 
         <!-- Scene 0: The Void / Opening -->
         <section id="intro" class="scene center-scene">
-            <div class="content-center intro-text">
+            <div class="content-center intro-text" style="z-index: 10; opacity: 1; visibility: visible;">
                 <h1 class="main-title">
                     自然の恵み。<br>
                     そのまま。<br>
@@ -89,10 +90,10 @@
                 <h3 class="section-lead concept-lead">自然の恵み。そのまま。恵那から。</h3>
                 <!-- Concept Image Slider -->
                 <div class="concept-image-slider">
-                    <img src="images/concept_new_slide_1.jpg" alt="米良氣の空" class="slide active">
-                    <img src="images/concept_new_slide_2.jpg" alt="米良氣の畑" class="slide">
-                    <img src="images/concept_new_slide_3.jpg" alt="はざ掛け" class="slide">
-                    <img src="images/concept_new_slide_4.jpg" alt="子どもと風景" class="slide">
+                    <img src="images/concept_new_slide_1.jpg" alt="米良氣の空" class="slide active" loading="lazy">
+                    <img src="images/concept_new_slide_2.jpg" alt="米良氣の畑" class="slide" loading="lazy">
+                    <img src="images/concept_new_slide_3.jpg" alt="はざ掛け" class="slide" loading="lazy">
+                    <img src="images/concept_new_slide_4.jpg" alt="子どもと風景" class="slide" loading="lazy">
                 </div>
 
                 <p class="section-desc concept-desc" style="text-align: left; display: inline-block;">
@@ -114,78 +115,76 @@
             </div>
         </section>
 
-        <!-- PRODUCT Title placed between CONCEPT and scrolling products -->
-        <div class="product-title-block">
-            <h2 class="section-title">PRODUCT</h2>
-            <h3 class="section-lead">大地からの贈りもの</h3>
-        </div>
+        <!-- Scene 2: The Harvest (PRODUCT section with Title and Horizontal Scroll) -->
+        <section id="harvest" class="scene harvest-section">
+            <!-- PRODUCT Title -->
+            <div class="product-title-block">
+                <h2 class="section-title">PRODUCT</h2>
+                <h3 class="section-lead">大地からの贈りもの</h3>
+            </div>
 
-        <!-- Scene 2: The Harvest (PRODUCT - Horizontal Scroll Store) -->
-        <!-- This section will be pinned by GSAP -->
-        <section id="harvest" class="scene horizontal-wrapper">
-            <div class="horizontal-container">
-                <!-- Spacer to push the first product into the center of the screen -->
-                <div class="h-item spacer-block" style="width: 20vw;"></div>
+            <!-- This wrapper holds the horizontally scrolling items -->
+            <div id="harvest-scroll" class="horizontal-wrapper">
+                <div class="horizontal-container">
+                    <!-- Spacer to push the first product completely off-screen -->
+                    <div class="h-item spacer-block"></div>
 
-                <!-- Product 1 -->
-                <div class="h-item product-card">
-                    <div class="p-image-wrap">
-                        <img src="images/product_koshihikari_v4.jpg" alt="自然栽培コシヒカリ">
-                        <div class="p-glow"></div>
+                    <!-- Product 1 -->
+                    <div class="h-item product-card">
+                        <div class="p-image-wrap">
+                            <img src="images/product_koshihikari_v4.jpg" alt="自然栽培コシヒカリ" loading="lazy">
+                            <div class="p-glow"></div>
+                        </div>
+                        <div class="p-info">
+                            <h3 class="p-name">自然栽培コシヒカリ</h3>
+                            <p class="p-desc">
+                                毎日食べるものだから、特別ではなくていい。<br>
+
+                                炊きたての湯気の向こうに、山の水と土の匂いが、<br>
+                                少しだけ残るごはんです。
+                            </p>
+                        </div>
                     </div>
-                    <div class="p-info">
-                        <h3 class="p-name">自然栽培コシヒカリ</h3>
-                        <p class="p-desc">
-                            毎日食べるものだから、特別ではなくていい。<br>
 
-                            炊きたての湯気の向こうに、山の水と土の匂いが、<br>
-                            少しだけ残るごはんです。
-                        </p>
-                        <a href="#" class="p-btn">VIEW</a>
+                    <!-- Product 2 -->
+                    <div class="h-item product-card">
+                        <div class="p-image-wrap">
+                            <img src="images/product_black_rice_v4.jpg" alt="古代米" loading="lazy">
+                            <div class="p-glow"></div>
+                        </div>
+                        <div class="p-info">
+                            <h3 class="p-name">古代米 (黒米)</h3>
+                            <p class="p-desc">
+                                白いごはんに、ひとさじだけ混ぜて炊く。<br>
+
+                                湯気の中に、少しだけ山の香りと深い色が混ざります。<br>
+
+                                特別なごはんではなく毎日のごはんに、少しだけ季節を足すための米です。
+                            </p>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Product 2 -->
-                <div class="h-item product-card">
-                    <div class="p-image-wrap">
-                        <img src="images/product_black_rice_v4.jpg" alt="古代米">
-                        <div class="p-glow"></div>
+                    <!-- Product 3 -->
+                    <div class="h-item product-card">
+                        <div class="p-image-wrap">
+                            <img src="images/product_vegetables_v3.jpg" alt="季節の野菜便" loading="lazy">
+                            <div class="p-glow"></div>
+                        </div>
+                        <div class="p-info">
+                            <h3 class="p-name">季節の野菜便</h3>
+                            <p class="p-desc">
+                                山の畑で採れたものを、その時の旬のまま詰めてお届けします。<br>
+
+                                特別な料理じゃなく、いつもの食卓にちょうどいい野菜です。
+                            </p>
+                        </div>
                     </div>
-                    <div class="p-info">
-                        <h3 class="p-name">古代米 (黒米)</h3>
-                        <p class="p-desc">
-                            白いごはんに、ひとさじだけ混ぜて炊く。<br>
 
-                            湯気の中に、少しだけ山の香りと深い色が混ざります。<br>
-
-                            特別なごはんではなく毎日のごはんに、少しだけ季節を足すための米です。
-                        </p>
-                        <a href="#" class="p-btn">VIEW</a>
+                    <div class="h-item store-link-card">
+                        <a href="https://off98xwo2qneyadoq43u.stores.jp/" target="_blank" class="circle-link">
+                            <span>Online<br>Store</span>
+                        </a>
                     </div>
-                </div>
-
-                <!-- Product 3 -->
-                <div class="h-item product-card">
-                    <div class="p-image-wrap">
-                        <img src="images/product_vegetables_v3.jpg" alt="季節の野菜便">
-                        <div class="p-glow"></div>
-                    </div>
-                    <div class="p-info">
-                        <h3 class="p-name">季節の野菜便</h3>
-                        <p class="p-desc">
-                            山の畑で採れたものを、その時の旬のまま詰めてお届けします。<br>
-
-                            特別な料理じゃなく、いつもの食卓にちょうどいい野菜です。
-                        </p>
-                        <a href="#" class="p-btn">VIEW</a>
-                    </div>
-                </div>
-
-                <!-- Store Link -->
-                <div class="h-item store-link-card">
-                    <a href="#" class="circle-link">
-                        <span>Online<br>Store</span>
-                    </a>
                 </div>
             </div>
         </section>
@@ -199,7 +198,7 @@
 
                 <!-- Tiny Image inserted here -->
                 <div class="about-image-small">
-                    <img src="images/about_new.jpg" alt="米良氣の米作り">
+                    <img src="images/about_new.jpg" alt="米良氣の米作り" loading="lazy">
                 </div>
 
                 <p class="section-desc" style="text-align: left; display: inline-block;">
@@ -216,7 +215,8 @@
                     家族が毎日食べるごはんだけは、<br>
                     ごまかさずに作りたい。<br><br>
 
-                    その思いで、田んぼに向き合っています。
+                    その思いで、田んぼに向き合っています。<br><br>
+                    <a href="#" class="meraki-dict-btn" id="openDictBtn">米良氣とは</a>
                 </p>
                 <!-- Old image wrapper completely removed -->
             </div>
@@ -224,77 +224,266 @@
 
         <!-- Scene 4: Journal (Constellation) -->
         <section id="journal" class="scene constellation-scene">
-            <h2 class="section-title text-center">農園日誌</h2>
-            <div class="constellation-grid">
-                <!-- Star 1 -->
-                <article class="star-node" style="top: 20%; left: 20%;">
-                    <div class="star-point"></div>
-                    <div class="star-content">
-                        <span class="star-date">2026.04.15</span>
-                        <h4 class="star-title">春の訪れと苗作り</h4>
+            <div style="text-align: center; width: 100%;">
+                <h2 class="section-title">JOURNAL</h2>
+                <h3 class="section-lead">山の中での暮らしの記録</h3>
+            </div>
+            <!-- Constellation Background (Decorative) -->
+            <div class="constellation-bg-layer">
+                <div class="constellation-grid">
+                    <!-- Lines connecting Star 3 to Star 2 to Star 1 -->
+                    <div class="constellation-line" style="top: 40%; left: 40%; width: 47%; transform: rotate(-32deg);">
                     </div>
-                </article>
-                <!-- Line 1-2 -->
-                <div class="constellation-line" style="top: 22%; left: 21%; width: 25%; transform: rotate(15deg);">
+                    <div class="constellation-line" style="top: 75%; left: 15%; width: 43%; transform: rotate(-54deg);">
+                    </div>
                 </div>
+            </div>
 
-                <!-- Star 2 -->
-                <article class="star-node" style="top: 40%; left: 50%;">
-                    <div class="star-point"></div>
-                    <div class="star-content">
-                        <span class="star-date">2026.03.20</span>
-                        <h4 class="star-title">土壌の準備について</h4>
-                    </div>
-                </article>
-                <!-- Line 2-3 -->
-                <div class="constellation-line" style="top: 42%; left: 51%; width: 20%; transform: rotate(45deg);">
+            <!-- Dynamic Article Container -->
+            <div id="note-article-container" class="article-gallery">
+                <!-- Loading State / Fallback -->
+                <div class="gallery-placeholder">読み込み中...</div>
+            </div>
+
+            <div style="text-align: center; margin-top: 60px; width: 100%;">
+                <p class="section-desc">
+                    農園の様子は不定期で更新しています。<br>
+                    気になることがあればお気軽に問合せください。
+                </p>
+                <div style="margin-top: 30px;">
+                    <a href="https://note.com/meraki_noen" target="_blank" class="p-btn"
+                        style="display: inline-block;">農園の日々を見る</a>
                 </div>
+            </div>
+        </section>
 
-                <!-- Star 3 -->
-                <article class="star-node" style="top: 70%; left: 65%;">
-                    <div class="star-point"></div>
-                    <div class="star-content">
-                        <span class="star-date">2026.02.10</span>
-                        <h4 class="star-title">味噌作りWS開催</h4>
+        <!-- Scene 5: RECIPE (Horizontal Scroll) -->
+        <section id="recipe" class="scene left-scene harvest-section">
+            <div class="product-title-block">
+                <h2 class="section-title">RECIPE</h2>
+                <h3 class="section-lead">山の暮らしのごはん</h3>
+            </div>
+
+            <div id="recipe-scroll" class="horizontal-wrapper">
+                <div class="horizontal-container">
+                    <!-- Spacer -->
+                    <div class="h-item spacer-block"></div>
+
+                    <!-- Recipe 1 -->
+                    <div class="h-item product-card article-card" data-index="1">
+                        <div class="p-image-wrap article-thumb">
+                            <img src="images/product_black_rice_v4.jpg" alt="黒米入りごはん" loading="lazy">
+                        </div>
+                        <div class="p-info article-content" style="padding: 0;">
+                            <span class="article-card-date">DAILY</span>
+                            <h4 class="article-card-title p-name">黒米入りごはん</h4>
+                            <p class="section-desc p-desc" style="text-align: left; margin-bottom: 2vh;">
+                                米良氣農園で育てた黒米を、白米に少し混ぜて炊くだけ。<br>
+                                ほんのり紫色に染まり、もちっとした食感とやさしい甘みが広がります。<br><br>
+                                特別な料理はいらない。ただ炊くだけで、毎日のごはんが少し豊かになる。<br>
+                                山の暮らしの中で続いてきた、素朴で美味しいごはんです。
+                            </p>
+                            <a href="#" class="recipe-detail-btn" data-recipe="black-rice">作り方を見る</a>
+                        </div>
                     </div>
-                </article>
+
+                    <!-- Recipe 2 -->
+                    <div class="h-item product-card article-card" data-index="2">
+                        <div class="p-image-wrap article-thumb">
+                            <img src="images/recipe_onigiri.jpg" alt="お結び" loading="lazy">
+                        </div>
+                        <div class="p-info article-content" style="padding: 0;">
+                            <span class="article-card-date">BASIC</span>
+                            <h4 class="article-card-title p-name">お結び</h4>
+                            <p class="section-desc p-desc" style="text-align: left; margin-bottom: 2vh;">
+                                特別な具がなくても、黒米ごはんを結ぶだけで十分おいしい。<br>
+                                もちっとした食感と自然な甘みが広がり、冷めても味が落ちにくいのが特徴です。<br><br>
+                                塩だけでも満足できる、毎日の食卓に続く黒米お結びです。
+                            </p>
+                            <a href="#" class="recipe-detail-btn" data-recipe="onigiri">作り方を見る</a>
+                        </div>
+                    </div>
+
+                    <!-- Recipe 3 -->
+                    <div class="h-item product-card article-card" data-index="3">
+                        <div class="p-image-wrap article-thumb">
+                            <img src="images/recipe_okayu.png" alt="黒米入りお粥" loading="lazy">
+                        </div>
+                        <div class="p-info article-content" style="padding: 0;">
+                            <span class="article-card-date">SPECIAL</span>
+                            <h4 class="article-card-title p-name">黒米入りお粥</h4>
+                            <p class="section-desc p-desc" style="text-align: left; margin-bottom: 2vh;">
+                                黒米を少し加えて炊いた、体にやさしい山の朝ごはん。<br>
+                                ほんのり紫色のお粥は、もちっとした食感と自然な甘みが広がります。<br><br>
+                                食欲のない日にもすっと入る、滋味深くほっとする一杯です。
+                            </p>
+                            <a href="#" class="recipe-detail-btn" data-recipe="okayu">作り方を見る</a>
+                        </div>
+                    </div>
+
+                    <!-- Recipe 4 -->
+                    <div class="h-item product-card article-card" data-index="4">
+                        <div class="p-image-wrap article-thumb">
+                            <img src="images/recipe_chahan.png" alt="黒米炒飯" loading="lazy">
+                        </div>
+                        <div class="p-info article-content" style="padding: 0;">
+                            <span class="article-card-date">DAILY</span>
+                            <h4 class="article-card-title p-name">黒米炒飯</h4>
+                            <p class="section-desc p-desc" style="text-align: left; margin-bottom: 2vh;">
+                                黒米を白ごはんに少し混ぜるだけで、炒飯がぐっと風味豊かに。<br>
+                                ほんのり紫色に仕上がり、もちっとした粒感と香ばしさが食欲をそそります。<br><br>
+                                いつもの炒飯が、体にも嬉しいごちそうに変わる一皿です。
+                            </p>
+                            <a href="#" class="recipe-detail-btn" data-recipe="chahan">作り方を見る</a>
+                        </div>
+                    </div>
+
+                    <!-- Recipe 5 -->
+                    <div class="h-item product-card article-card" data-index="5">
+                        <div class="p-image-wrap article-thumb">
+                            <img src="images/recipe_smoothie.png" alt="黒米甘酒ブルーベリースムージー" loading="lazy">
+                        </div>
+                        <div class="p-info article-content" style="padding: 0;">
+                            <span class="article-card-date">SEASONAL</span>
+                            <h4 class="article-card-title p-name">黒米甘酒ブルーベリースムージー</h4>
+                            <p class="section-desc p-desc" style="text-align: left; margin-bottom: 2vh;">
+                                黒米から生まれた甘酒に、ブルーベリーとバナナを合わせたやさしい一杯。<br>
+                                砂糖を使わなくても自然な甘みが広がり、黒米の栄養もそのまま。<br><br>
+                                朝の一杯にも、おやつ代わりにもなる、山の暮らしから生まれた滋養スムージーです。
+                            </p>
+                            <a href="#" class="recipe-detail-btn" data-recipe="smoothie">作り方を見る</a>
+                        </div>
+                    </div>
+
+                    <!-- Power of Black Rice Circle -->
+                    <div class="h-item store-link-card">
+                        <a href="#" id="openBlackRiceBtn" class="circle-link">
+                            <span>黒米の力</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- Scene 5: Recipe (Placeholder) -->
-        <section id="recipe" class="scene center-scene" style="padding: 100px 0;">
+        <!-- Scene 6: FAQ -->
+        <section id="faq" class="scene center-scene">
             <div class="content-center">
-                <h2 class="section-title text-center">RECIPE</h2>
-                <p class="section-desc">※現在準備中です</p>
+                <h2 class="section-title">FAQ</h2>
+                <h3 class="section-lead">よくあるご質問</h3>
+                <p class="section-desc" style="margin-top: 20px;">よくいただく質問をまとめています</p>
+                <div style="margin-top: 40px;">
+                    <a href="#" id="openFaqBtn" class="p-btn">よくある質問をすべて見る</a>
+                </div>
             </div>
         </section>
 
-        <!-- Scene 6: FAQ (Placeholder) -->
-        <section id="faq" class="scene center-scene" style="padding: 100px 0;">
-            <div class="content-center">
-                <h2 class="section-title text-center">FAQ</h2>
-                <p class="section-desc">※現在準備中です</p>
-            </div>
-        </section>
-
-        <!-- Scene 7: Credits (CONTACT) -->
+        <!-- Scene 7: Credits (INFORMATION) -->
         <section id="credits" class="scene credits-scene">
             <div class="credits-roll">
-                <p class="credit-role">Location</p>
-                <p class="credit-name">Gifu, Ena, Nakanoho</p>
+                <h2 class="section-title">INFORMATION</h2>
+                <h3 class="section-lead">農園概要</h3>
 
-                <p class="credit-role">Farmer</p>
-                <p class="credit-name">Meraki Farm</p>
-
-                <p class="credit-role">Philosophy</p>
-                <p class="credit-name">Nature Farming</p>
-
-                <!-- Contact Form Embedded -->
-                <div class="contact-embed">
-                    <a href="mailto:info@merakifarm.jp" class="explore-btn">CONTACT US</a>
+                <div class="farm-info">
+                    <div class="info-row">
+                        <span class="info-label">屋号</span>
+                        <span class="info-value">米良氣農園（めらき のうえん）</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">所在地</span>
+                        <span class="info-value">〒509-8231 岐阜県恵那市中野方町4163</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">事業内容</span>
+                        <span class="info-value">
+                            自然栽培米（コシヒカリ、古代米）の生産・販売<br>
+                            季節野菜の生産・販売<br>
+                            農業体験・見学
+                        </span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">耕作面積</span>
+                        <span class="info-value">約 0.5 ha（現在拡大中）</span>
+                    </div>
                 </div>
 
-                <div class="final-logo">米良氣</div>
+                <div style="margin-top: 60px;">
+                    <h3 class="section-lead" style="margin-bottom: 20px;">農業体験について</h3>
+                    <p class="section-desc" style="line-height: 2;">
+                        田植えや稲刈りの季節には、農業体験イベントも開催しています。<br>
+                        土に触れ、風を感じる時間を。
+                    </p>
+                </div>
+
+                <!-- Contact Section -->
+                <div class="contact-section-container" style="margin-top: 100px;">
+                    <div class="contact-header">
+                        <h2 class="section-title">CONTACT</h2>
+                        <h3 class="section-lead">お問い合わせ</h3>
+                    </div>
+
+                    <form id="contactForm"
+                        action="https://docs.google.com/forms/d/e/1FAIpQLSeuj1_oxoehLb6EtUnNinMu48ud0BfIfhL9CnK5X0Q48sjwxg/formResponse"
+                        method="POST" target="hidden_iframe" onsubmit="submitted=true;" class="cinematic-form">
+
+                        <div class="form-group">
+                            <label for="name">お名前 <span class="required">*</span></label>
+                            <input type="text" id="name" name="entry.996518757" placeholder="山田 太郎" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">メールアドレス <span class="required">*</span></label>
+                            <input type="email" id="email" name="entry.646397582" placeholder="example@mail.com"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject">件名</label>
+                            <input type="text" id="subject" name="entry.1814098995" placeholder="商品について">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">お問い合わせ内容 <span class="required">*</span></label>
+                            <textarea id="message" name="entry.870972404" rows="6" placeholder="自由にご記入ください"
+                                required></textarea>
+                        </div>
+
+                        <div class="form-agreement">
+                            <input type="checkbox" id="privacy" name="entry.1820255308" value="同意します" required>
+                            <label for="privacy">個人情報保護方針に同意する</label>
+                        </div>
+
+                        <div class="form-submit">
+                            <button type="submit" class="explore-btn">送信する</button>
+                        </div>
+                    </form>
+
+                    <!-- Hidden iframe to hold the response -->
+                    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"
+                        onload="if(submitted) { window.showContactSuccess(); }"></iframe>
+
+                    <div id="contactSuccess" class="contact-success-msg" style="display: none;">
+                        <p>お問い合わせを受け付けました。<br>返信まで少々お待ちください。</p>
+                        <button class="recipe-detail-btn" onclick="window.resetContactForm()">戻る</button>
+                    </div>
+                </div>
+
+                <div class="final-logo">
+                    <img src="images/logo.png" alt="米良氣農園">
+                </div>
+
+                <!-- Footer Links & Copyright -->
+                <div class="footer-bottom">
+                    <div class="footer-links">
+                        <a href="javascript:void(0)" id="openTermsBtn">利用規約</a>
+                        <span class="separator">|</span>
+                        <a href="javascript:void(0)" id="openPrivacyBtn">個人情報保護方針</a>
+                        <span class="separator">|</span>
+                        <a href="javascript:void(0)" id="openSectaBtn">特定商取引法に基づく表記</a>
+                    </div>
+                    <div class="footer-copyright">
+                        <p>&copy; MERAKINOEN All Rights Reserved.</p>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -318,8 +507,774 @@
         </div>
     </div>
 
-    <!-- Script -->
-    <script src="js/cinematic.js"></script>
+    <!-- Meraki Dictionary Modal (Vertical Text) -->
+    <div class="dict-modal" id="merakiDictModal">
+        <div class="dict-close" id="dictCloseBtn"><span></span><span></span></div>
+        <div class="dict-content-wrapper">
+            <div class="dict-vertical-text">
+                <div class="dict-header">
+                    <h2 class="dict-title">めらき【米良氣】<span class="dict-ruby">〔造語〕</span></h2>
+                </div>
+
+                <div class="dict-entry">
+                    <span class="dict-num">①【名】</span>
+                    <p>天地のあいだに満ちる生命の根源的エネルギー（氣）が、<br>米という一粒のうちに充ち宿る状態。</p>
+                </div>
+
+                <div class="dict-entry">
+                    <span class="dict-num">②【名】<span class="dict-ruby">〔語源：ギリシャ語 meraki〕</span></span>
+                    <p>利得・効率のためではなく、<br>純粋な喜び・誇り・愛情をもって、<br>魂を込めて物事に取り組むこと。</p>
+                </div>
+
+                <div class="dict-entry">
+                    <span class="dict-num">③【名】</span>
+                    <p>岐阜県恵那市中野方町に拠点を置く農園の屋号、<br>またその栽培思想。<br>農薬・肥料に依らず、<br>土壌の力と微生物の働きに委ねて作物を育てる農法を指す。</p>
+                </div>
+
+                <div class="dict-entry">
+                    <span class="dict-num">④【名】</span>
+                    <p>「己の子に食べさせられるか」という問いを、<br>判断の根本に据える倫理観。</p>
+                </div>
+
+                <div class="dict-entry">
+                    <span class="dict-num">五【農】<span class="dict-ruby">〔―の米〕</span></span>
+                    <p>太陽・水・大地の働きのみにより育成された米。<br>澄みある滋味を特質とする。</p>
+                </div>
+
+                <div class="dict-quote">
+                    <p>――この米を、次世代へ繋ぐ。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Power of Black Rice Modal (Vertical Text) -->
+    <div class="dict-modal" id="blackRicePowerModal">
+        <div class="dict-close" id="powerCloseBtn"><span></span><span></span></div>
+        <div class="dict-content-wrapper">
+            <div class="dict-vertical-text">
+                <div class="dict-header">
+                    <h2 class="dict-title">黒米の力</h2>
+                </div>
+
+                <div class="dict-entry">
+                    <p>黒米の色は、<br>ポリフェノールの一種<br>「アントシアニン」によるものです。</p>
+                </div>
+
+                <div class="dict-entry">
+                    <p>この成分は、<br>体のサビつきを防ぐ抗酸化作用が<br>あると言われています。</p>
+                </div>
+
+                <div class="dict-entry">
+                    <p>さらに黒米には、<br><br>
+                        食物繊維<br><br>
+                        ミネラル（鉄・マグネシウムなど）<br><br>
+                        ビタミン類<br><br>
+                        も含まれており、<br>白米だけでは不足しがちな栄養を<br>補うことができます。</p>
+                </div>
+
+                <div class="dict-entry">
+                    <p>無理な健康食品ではなく、<br>毎日の主食で自然に取り入れられるのが<br>黒米の魅力です。</p>
+                </div>
+
+                <div class="dict-entry">
+                    <p>食生活を大きく変えなくてもいい。<br>
+                        ただ、いつものごはんに少し混ぜるだけ。</p>
+                </div>
+
+                <div class="dict-entry">
+                    <p>それだけで、<br>
+                        味も栄養も、毎日が少し変わります。</p>
+                </div>
+
+                <div class="dict-entry">
+                    <p>まずは、<br>
+                        あなたの食卓で試してみてください。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recipe Detail Modal (Horizontal Text) -->
+    <div class="recipe-modal" id="black-riceModal">
+        <div class="recipe-close" id="recipeCloseBtn"><span></span><span></span></div>
+        <div class="recipe-content-wrapper">
+            <div class="recipe-detail-content">
+                <div class="recipe-header">
+                    <span class="recipe-tag">DAILY RECIPE</span>
+                    <h2 class="recipe-title">黒米入りごはん</h2>
+                </div>
+
+                <div class="recipe-grid-layout">
+                    <div class="recipe-steps">
+                        <h3 class="recipe-sub">作り方</h3>
+                        <ol class="step-list">
+                            <li>白米を洗い、いつも通り水に浸ける<br><span class="step-note">（30分〜1時間）</span></li>
+                            <li>黒米を軽くすすぐ<br><span class="step-note">※洗いすぎなくてOK</span></li>
+                            <li>白米に黒米を加える</li>
+                            <li>水を少し多めに入れ30分～1時間ほど給水させる<br><span class="step-note">（黒米は水を吸うため）</span></li>
+                            <li>普通炊きで炊飯する</li>
+                            <li>炊き上がったらよく混ぜて完成</li>
+                        </ol>
+                    </div>
+
+                    <div class="recipe-tips">
+                        <h3 class="recipe-sub">おいしく炊くコツ</h3>
+                        <ul class="tip-list">
+                            <li>黒米を増やすほど色が濃くなります</li>
+                            <li>冷めてもおいしい（むしろ旨み出る）</li>
+                            <li>おにぎりにすると最高です</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Onigiri Recipe Modal (Horizontal Text) -->
+    <div class="recipe-modal" id="onigiriModal">
+        <div class="recipe-close" id="onigiriCloseBtn"><span></span><span></span></div>
+        <div class="recipe-content-wrapper">
+            <div class="recipe-detail-content">
+                <div class="recipe-header">
+                    <span class="recipe-tag">BASIC RECIPE</span>
+                    <h2 class="recipe-title">黒米お結び</h2>
+                </div>
+
+                <div class="recipe-grid-layout">
+                    <div class="recipe-steps">
+                        <h3 class="recipe-sub">■ 作り方</h3>
+                        <ol class="step-list">
+                            <li>手を水で軽く濡らす<br><span class="step-note">（ごはんが付きにくくなります）</span></li>
+                            <li>手のひらに少量の塩を広げる</li>
+                            <li>ごはんを手にのせ、ふんわりと包むように握る<br><span class="step-note">※強く押しすぎないのがコツ。空気を残すと食感がよくなります</span>
+                            </li>
+                            <li>お好みで海苔を巻く</li>
+                        </ol>
+                    </div>
+
+                    <div class="recipe-tips">
+                        <div style="margin-bottom: 30px;">
+                            <h3 class="recipe-sub">■ 材料（2個分）</h3>
+                            <ul class="tip-list">
+                                <li>炊いた黒米ごはん … お茶碗2杯分</li>
+                                <li>塩 … 少々</li>
+                                <li>海苔（お好みで）</li>
+                                <li><span class="step-note">※具を入れる場合：梅干し、焼き鮭、味噌など</span></li>
+                            </ul>
+                        </div>
+
+                        <h3 class="recipe-sub">■ おいしく作るポイント</h3>
+                        <ul class="tip-list">
+                            <li>炊きたてより少し落ち着いたごはんが握りやすいです</li>
+                            <li>黒米入りごはんは冷めても硬くなりにくいです</li>
+                            <li>塩だけでも味が立つのが特徴です</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Porridge Recipe Modal (Horizontal Text) -->
+    <div class="recipe-modal" id="okayuModal">
+        <div class="recipe-close" id="okayuCloseBtn"><span></span><span></span></div>
+        <div class="recipe-content-wrapper">
+            <div class="recipe-detail-content">
+                <div class="recipe-header">
+                    <span class="recipe-tag">SPECIAL RECIPE</span>
+                    <h2 class="recipe-title">黒米入りお粥</h2>
+                </div>
+
+                <div class="recipe-grid-layout">
+                    <div class="recipe-steps">
+                        <h3 class="recipe-sub">作り方</h3>
+                        <ol class="step-list">
+                            <li>米と黒米を軽く洗う</li>
+                            <li>鍋に米・水を入れ30分ほど浸水</li>
+                            <li>中火にかけ、沸いたら弱火にして20〜25分煮る</li>
+                            <li>米がやわらかくなったら完成</li>
+                            <li>お好みで塩をひとつまみ</li>
+                        </ol>
+                    </div>
+
+                    <div class="recipe-tips">
+                        <div style="margin-bottom: 30px;">
+                            <h3 class="recipe-sub">材料（2人分）</h3>
+                            <ul class="tip-list">
+                                <li>白米 … 1/2合</li>
+                                <li>黒米 … 小さじ1〜2</li>
+                                <li>水 … 約500〜600ml</li>
+                                <li>塩 … 少々（お好み）</li>
+                            </ul>
+                        </div>
+
+                        <h3 class="recipe-sub">おいしく作るポイント</h3>
+                        <ul class="tip-list">
+                            <li>火加減は弱火でゆっくりコトコト煮るのがコツです</li>
+                            <li>水の量でお好みの硬さに調整してください</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fried Rice Recipe Modal (Horizontal Text) -->
+    <div class="recipe-modal" id="chahanModal">
+        <div class="recipe-close" id="chahanCloseBtn"><span></span><span></span></div>
+        <div class="recipe-content-wrapper">
+            <div class="recipe-detail-content">
+                <div class="recipe-header">
+                    <span class="recipe-tag">DAILY RECIPE</span>
+                    <h2 class="recipe-title">黒米炒飯</h2>
+                </div>
+
+                <div class="recipe-grid-layout">
+                    <div class="recipe-steps">
+                        <h3 class="recipe-sub">作り方</h3>
+                        <ol class="step-list">
+                            <li>フライパンに油を熱し、溶き卵を入れて半熟状にする</li>
+                            <li>ごはんを加えてほぐしながら強めの中火で炒める</li>
+                            <li>刻んだ具材（ねぎ・ハム等）を入れる</li>
+                            <li>塩で味を整え、仕上げに醤油を鍋肌から回す</li>
+                            <li>最後にごま油をひと回しして完成</li>
+                        </ol>
+                    </div>
+
+                    <div class="recipe-tips">
+                        <div style="margin-bottom: 30px;">
+                            <h3 class="recipe-sub">材料（2人分）</h3>
+                            <ul class="tip-list">
+                                <li>黒米入りごはん … 茶碗2杯分</li>
+                                <li>卵 … 2個</li>
+                                <li>長ねぎ … 1/3本</li>
+                                <li>ハム or 焼豚 … 適量</li>
+                                <li>塩 … 少々</li>
+                                <li>醤油 … 小さじ1</li>
+                                <li>ごま油 … 小さじ1</li>
+                                <li>油 … 大さじ1</li>
+                            </ul>
+                        </div>
+
+                        <h3 class="recipe-sub">おいしく作るポイント</h3>
+                        <ul class="tip-list">
+                            <li>ごはんは温かいものを使うとほぐれやすいです</li>
+                            <li>強めの火で手早く炒めるのがパラパラにするコツです</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Smoothie Recipe Modal (Horizontal Text) -->
+    <div class="recipe-modal" id="smoothieModal">
+        <div class="recipe-close" id="smoothieCloseBtn"><span></span><span></span></div>
+        <div class="recipe-content-wrapper">
+            <div class="recipe-detail-content">
+                <div class="recipe-header">
+                    <span class="recipe-tag">SEASONAL RECIPE</span>
+                    <h2 class="recipe-title">黒米甘酒ブルーベリースムージー</h2>
+                </div>
+
+                <div class="recipe-grid-layout">
+                    <div class="recipe-steps">
+                        <h3 class="recipe-sub">作り方</h3>
+                        <ol class="step-list">
+                            <li>材料をすべてミキサーに入れる</li>
+                            <li>なめらかになるまで攪拌する</li>
+                            <li>甘さを見て、必要ならバナナを少し追加</li>
+                            <li>グラスに注いで完成</li>
+                        </ol>
+                    </div>
+
+                    <div class="recipe-tips">
+                        <div style="margin-bottom: 30px;">
+                            <h3 class="recipe-sub">材料（1〜2杯分）</h3>
+                            <ul class="tip-list">
+                                <li>黒米甘酒 … 150ml</li>
+                                <li>バナナ … 1本</li>
+                                <li>冷凍ブルーベリー … ひとつかみ</li>
+                                <li>牛乳 or 豆乳 … 50〜100ml</li>
+                                <li>氷 … お好みで</li>
+                            </ul>
+                        </div>
+
+                        <h3 class="recipe-sub">おいしく作るポイント</h3>
+                        <ul class="tip-list">
+                            <li>バナナは完熟したものを使うとより甘みが引き立ちます</li>
+                            <li>黒米甘酒の「つぶつぶ感」が残っても食感が楽しめます</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Modal -->
+    <div class="recipe-modal" id="faqModal">
+        <div class="recipe-close" id="faqCloseBtn"><span></span><span></span></div>
+        <div class="recipe-content-wrapper">
+            <div class="recipe-detail-content">
+                <div class="recipe-header">
+                    <span class="recipe-tag">FAQ</span>
+                    <h2 class="recipe-title">よくあるご質問</h2>
+                </div>
+
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <h4 class="faq-question"><span>Q.</span> 黒米は毎日食べても大丈夫ですか？</h4>
+                        <p class="faq-answer">はい、大丈夫です。<br>
+                            白米に少し混ぜるだけなので体への負担はなく、山の暮らしの中でも日常的に食べられてきました。むしろ毎日のごはんに取り入れやすい食材です。</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question"><span>Q.</span> 味にクセはありますか？</h4>
+                        <p class="faq-answer">強いクセはありません。<br>
+                            ほんのり甘みがあり、もちっとした食感が加わる程度です。白米の味を邪魔しないので、初めての方でも食べやすいです。</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question"><span>Q.</span> どのくらい混ぜればいいですか？</h4>
+                        <p class="faq-answer">白米2合に対して黒米大さじ1が目安です。<br>
+                            色を濃くしたい場合は少し増やしても大丈夫です。</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question"><span>Q.</span> 子どもでも食べられますか？</h4>
+                        <p class="faq-answer">問題なく食べられます。<br>
+                            お結びやお粥にすると特に食べやすく、家庭でもよく食べられています。</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question"><span>Q.</span> 保存方法は？</h4>
+                        <p class="faq-answer">直射日光・高温多湿を避け、密閉して保存してください。<br>
+                            長期保存する場合は冷蔵庫保存がおすすめです。</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question"><span>Q.</span> どんな人が作っていますか？</h4>
+                        <p class="faq-answer">米良氣農園は、山の中で暮らしながらお米を育てている小さな農園です。<br>
+                            日々の暮らしの延長にある農業を大切にしながら、一つひとつ手をかけて育てています。</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question"><span>Q.</span> 購入前に相談できますか？</h4>
+                        <p class="faq-answer">もちろん可能です。<br>
+                            食べ方や量の相談など、気軽にお問い合わせください。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms of Use Modal -->
+    <div class="recipe-modal" id="termsModal">
+        <div class="recipe-close" id="termsCloseBtn"><span></span><span></span></div>
+        <div class="recipe-content-wrapper">
+            <div class="recipe-detail-content">
+                <div class="recipe-header">
+                    <span class="recipe-tag">TERMS</span>
+                    <h2 class="recipe-title">利用規約</h2>
+                </div>
+
+                <div class="faq-list">
+                    <div class="faq-item" style="border-bottom: none; margin-bottom: 30px;">
+                        <p class="faq-answer">
+                            この利用規約（以下，「本規約」といいます。）は、米良氣農園（以下，「当農園」といいます。）がこのウェブサイト上で提供するサービス（以下，「本サービス」といいます。）の利用条件を定めるものです。登録ユーザーの皆さま（以下，「ユーザー」といいます。）には，本規約に従って，本サービスをご利用いただきます。
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">第1条（適用）</h4>
+                        <p class="faq-answer">
+                            1.本規約は，ユーザーと当農園との間の本サービスの利用に関わる一切の関係に適用されるものとします。<br>
+                            当農園は本サービスに関し，本規約のほか，ご利用にあたってのルール等，各種の定め（以下，「個別規定」といいます。）をすることがあります。これら個別規定はその名称のいかんに関わらず，本規約の一部を構成するものとします。<br>
+                            本規約の規定が前条の個別規定の規定と矛盾する場合には，個別規定において特段の定めなき限り，個別規定の規定が優先されるものとします。
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">第2条（利用登録）</h4>
+                        <p class="faq-answer">
+                            1.本サービスにおいては，登録希望者が本規約に同意の上，当農園の定める方法によって利用登録を申請し，当農園がこれを承認することによって，利用登録が完了するものとします。<br>
+                            当農園は，利用登録の申請者に以下の事由があると判断した場合，利用登録の申請を承認しないことがあり，その理由については一切の開示義務を負わないものとします。<br>
+                            ・利用登録の申請に際して虚偽の事項を届け出た場合<br>
+                            ・本規約に違反したことがある者からの申請である場合<br>
+                            ・その他，当農園が利用登録を相当でないと判断した場合
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">第3条（ユーザーIDおよびパスワードの管理）</h4>
+                        <p class="faq-answer">
+                            1.ユーザーは，自己の責任において，本サービスのユーザーIDおよびパスワードを適切に管理するものとします。<br>
+                            ユーザーは，いかなる場合にも，ユーザーIDおよびパスワードを第三者に譲渡または貸与し，もしくは第三者と共用することはできません。<br>
+                            当農園は，ユーザーIDとパスワードの組み合わせが登録情報と一致してログインされた場合には，そのユーザーIDを登録しているユーザー自身による利用とみなします。<br>
+                            ユーザーID及びパスワードが第三者によって使用されたことによって生じた損害は，当農園に故意又は重大な過失がある場合を除き，当農園は一切の責任を負わないものとします。
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">第4条（利用料金および支払方法）</h4>
+                        <p class="faq-answer">
+                            1.ユーザーは，本サービスの有料部分の対価として，当農園が別途定め，本ウェブサイトに表示する利用料金を，当農園が指定する方法により支払うものとします。<br>
+                            ユーザーが利用料金の支払を遅滞した場合には，ユーザーは年14．6％の割合による遅延損害金を支払うものとします。
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">第5条（禁止事項）</h4>
+                        <p class="faq-answer">
+                            1.ユーザーは，本サービスの利用にあたり，以下の行為をしてはなりません。<br>
+                            ・法令または公序良俗に違反する行為<br>
+                            ・犯罪行為に関連する行為<br>
+                            ・本サービスの内容等，本サービスに含まれる著作権，商標権ほか知的財産権を侵害する行為<br>
+                            ・当農園，ほかのユーザー，またはその他第三者のサーバーまたはネットワークの機能を破壊したり，妨害したりする行為<br>
+                            ・本サービスによって得られた情報を商業的に利用する行為<br>
+                            ・当農園のサービスの運営を妨害するおそれのある行為<br>
+                            ・不正アクセスをし，またはこれを試みる行為<br>
+                            ・他のユーザーに関する個人情報等を収集または蓄積する行為<br>
+                            ・不正な目的を持って本サービスを利用する行為<br>
+                            ・本サービスの他のユーザーまたはその他の第三者に不利益，損害，不快感を与える行為<br>
+                            ・他のユーザーに成りすます行為<br>
+                            ・当農園が許諾しない本サービス上での宣伝，広告，勧誘，または営業行為<br>
+                            ・面識のない異性との出会いを目的とした行為<br>
+                            ・当農園のサービスに関連して，反社会的勢力に対して直接または間接に利益を供与する行為<br>
+                            ・その他，当農園が不適切と判断する行為
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">第6条（本サービスの提供の停止等）</h4>
+                        <p class="faq-answer">
+                            1.当農園は，以下のいずれかの事由があると判断した場合，ユーザーに事前に通知することなく本サービスの全部または一部の提供を停止または中断することができるものとします。<br>
+                            ・本サービスにかかるコンピュータシステムの保守点検または更新を行う場合<br>
+                            ・地震，落雷，火災，停電または天災などの不可抗力により，本サービスの提供が困難となった場合<br>
+                            ・コンピュータまたは通信回線等が事故により停止した場合<br>
+                            ・その他，当農園が本サービスの提供が困難と判断した場合<br>
+                            当農園は，本サービスの提供の停止または中断により，ユーザーまたは第三者が被ったいかなる不利益または損害についても，一切の責任を負わないものとします。
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">第7条（利用制限および登録抹消）</h4>
+                        <p class="faq-answer">
+                            1.当農園は，ユーザーが以下のいずれかに該当する場合には，事前の通知なく，ユーザーに対して，本サービスの全部もしくは一部の利用を制限し，またはユーザーとしての登録を抹消することができるものとします。<br>
+                            ・本規約のいずれかの条項に違反した場合<br>
+                            ・登録事項に虚偽の事実があることが判明した場合<br>
+                            ・料金等の支払債務の不履行があった場合<br>
+                            ・当農園からの連絡に対し，一定期間返答がない場合<br>
+                            ・本サービスについて，最終の利用から一定期間利用がない場合<br>
+                            ・その他，当農園が本サービスの利用を適当でないと判断した場合<br>
+                            当農園は，本条に基づき当農園が行った行為によりユーザーに生じた損害について，一切の責任を負いません。
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">第8条（退会）</h4>
+                        <p class="faq-answer">
+                            1.ユーザーは，当農園の定める退会手続により，本サービスから退会できるものとします。
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">第9条（保証の否認および免責事項）</h4>
+                        <p class="faq-answer">
+                            1.当農園は，本サービスに事実上または法律上の瑕疵（安全性，信頼性，正確性，完全性，有効性，特定の目的への適合性，セキュリティなどに関する欠陥，エラーやバグ，権利侵害などを含みます。）がないことを明示的にも黙示的にも保証しておりません。<br>
+                            当農園は，本サービスに起因してユーザーに生じたあらゆる損害について一切の責任を負いません。ただし，本サービスに関する当農園とユーザーとの間の契約（本規約を含みます。）が消費者契約法に定める消費者契約となる場合，この免責規定は適用されません。<br>
+                            前項ただし書に定める場合であっても，当農園は，当農園の過失（重過失を除きます。）による債務不履行または不法行為によりユーザーに生じた損害のうち特別な事情から生じた損害（当農園またはユーザーが損害発生につき予見し，または予見し得た場合を含みます。）について一切の責任を負いません。また，当農園の過失（重過失を除きます。）による債務不履行または不法行為によりユーザーに生じた損害の賠償は，ユーザーから当該損害が発生した月に受領した利用料の額を上限とします。<br>
+                            当農園は，本サービスに関して，ユーザーと他のユーザーまたは第三者との間において生じた取引，連絡または紛争等について一切責任を負いません。
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">第10条（サービス内容の変更等）</h4>
+                        <p class="faq-answer">
+                            1.当農園は，ユーザーに通知することなく，本サービスの内容を変更しまたは本サービスの提供を中止することができるものとし，これによってユーザーに生じた損害について一切の責任を負いません。
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">第11条（利用規約の変更）</h4>
+                        <p class="faq-answer">
+                            1.当農園は，必要と判断した場合には，ユーザーに通知することなくいつでも本規約を変更することができるものとします。なお，本規約の変更後，本サービスの利用を開始した場合には，当該ユーザーは変更後の規約に同意したものとみなします。
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">第12条（個人情報の取扱い）</h4>
+                        <p class="faq-answer">
+                            1.当農園は，本サービスの利用によって取得する個人情報については，当農園「プライバシーポリシー」に従い適切に取り扱うものとします。
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">第13条（通知または連絡）</h4>
+                        <p class="faq-answer">
+                            1.ユーザーと当農園との間の通知または連絡は，当農園の定める方法によって行うものとします。<br>
+                            当農園は,ユーザーから,当農園が別途定める方式に従った変更届け出がない限り,現在登録されている連絡先が有効なものとみなして当該連絡先へ通知または連絡を行い,これらは,発信時にユーザーへ到達したものとみなします。
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">第14条（権利義務の譲渡の禁止）</h4>
+                        <p class="faq-answer">
+                            1.ユーザーは，当農園の書面による事前の承諾なく，利用契約上の地位または本規約に基づく権利もしくは義務を第三者に譲渡し，または担保に供することはできません。
+                        </p>
+                    </div>
+
+                    <div class="faq-item" style="border-bottom: none;">
+                        <h4 class="faq-question">第15条（準拠法・裁判管轄）</h4>
+                        <p class="faq-answer">
+                            1.本規約の解釈にあたっては，日本法を準拠法とします。<br>
+                            本サービスに関して紛争が生じた場合には，当農園の本店所在地を管轄する裁判所を専属的合意管轄とします。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Privacy Policy Modal -->
+    <div class="recipe-modal" id="privacyModal">
+        <div class="recipe-close" id="privacyCloseBtn"><span></span><span></span></div>
+        <div class="recipe-content-wrapper">
+            <div class="recipe-detail-content">
+                <div class="recipe-header">
+                    <span class="recipe-tag">PRIVACY</span>
+                    <h2 class="recipe-title">個人情報保護方針</h2>
+                </div>
+
+                <div class="faq-list">
+                    <div class="faq-item" style="border-bottom: none; margin-bottom: 30px;">
+                        <p class="faq-answer">
+                            米良氣農園（以下，「当農園」といいます。）は，本ウェブサイト上で提供するサービス（以下,「本サービス」といいます。）における，ユーザーの個人情報の取扱いについて，以下のとおりプライバシーポリシー（以下，「本ポリシー」といいます。）を定めます。
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">第1条（個人情報）</h4>
+                        <p class="faq-answer">
+                            「個人情報」とは，個人情報保護法にいう「個人情報」を指すものとし，生存する個人に関する情報であって，当該情報に含まれる氏名，生年月日，住所，電話番号，連絡先その他の記述等により特定の個人を識別できる情報及び容貌，指紋，声紋にかかるデータ，及び健康保険証の保険者番号などの当該情報単体から特定の個人を識別できる情報（個人識別情報）を指します。
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">第2条（個人情報の収集方法）</h4>
+                        <p class="faq-answer">
+                            当農園は，ユーザーが利用登録をする際に氏名，生年月日，住所，電話番号，メールアドレス，銀行口座番号，クレジットカード番号，運転免許証番号などの個人情報をお尋ねすることがあります。また，ユーザーと提携先などとの間でなされたユーザーの個人情報を含む取引記録や決済に関する情報を,当農園の提携先（情報提供元，広告主，広告配信先などを含みます。以下，｢提携先｣といいます。）などから収集することがあります。
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">第3条（個人情報を収集・利用する目的）</h4>
+                        <p class="faq-answer">
+                            当農園が個人情報を収集・利用する目的は，以下のとおりです。<br>
+                            1.当農園サービスの提供・運営のため<br>
+                            2.ユーザーからのお問い合わせに回答するため（本人確認を行うことを含む）<br>
+                            3.ユーザーが利用中のサービスの新機能，更新情報，キャンペーン等及び当農園が提供する他のサービスの案内のメールを送付するため<br>
+                            4.メンテナンス，重要なお知らせなど必要に応じたご連絡のため<br>
+                            5.利用規約に違反したユーザーや，不正・不当な目的でサービスを利用しようとするユーザーの特定をし，ご利用をお断りするため<br>
+                            6.ユーザーにご自身の登録情報の閲覧や変更，削除，ご利用状況の閲覧を行っていただくため<br>
+                            7.有料サービスにおいて，ユーザーに利用料金を請求するため<br>
+                            8.上記の利用目的に付随する目的
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">第4条（利用目的の変更）</h4>
+                        <p class="faq-answer">
+                            1.当農園は，利用目的が変更前と関連性を有すると合理的に認められる場合に限り，個人情報の利用目的を変更するものとします。<br>
+                            2.利用目的の変更を行った場合には，変更後の目的について，当農園所定の方法により，ユーザーに通知し，または本ウェブサイト上に公表するものとします。
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">第5条（個人情報の第三者提供）</h4>
+                        <p class="faq-answer">
+                            1.当農園は，次に掲げる場合を除いて，あらかじめユーザーの同意を得ることなく，第三者に個人情報を提供することはありません。ただし，個人情報保護法その他の法令で認められる場合を除きます。<br>
+                            　1.人の生命，身体または財産の保護のために必要がある場合であって，本人の同意を得ることが困難であるとき<br>
+                            　2.公衆衛生の向上または児童の健全な育成の推進のために特に必要がある場合であって，本人の同意を得ることが困難であるとき<br>
+                            　3.国の機関もしくは地方公共団体またはその委託を受けた者が法令の定める事務を遂行することに対して協力する必要がある場合であって，本人の同意を得ることにより当該事務の遂行に支障を及ぼすおそれがあるとき<br>
+                            　4.予め次の事項を告知あるいは公表し，かつ当農園が個人情報保護委員会に届出をしたとき<br>
+                            　　1.利用目的に第三者への提供を含むこと<br>
+                            　　2.第三者に提供されるデータの項目<br>
+                            　　3.第三者への提供の手段または方法<br>
+                            　　4.本人の求めに応じて個人情報の第三者への提供を停止すること<br>
+                            　　5.本人の求めを受け付ける方法<br>
+                            2.前項の規定にかかわらず，次に掲げる場合には，当該情報の提供先は第三者に該当しないものとします。<br>
+                            　1.当農園が利用目的の達成に必要な範囲内において個人情報の取扱いの全部または一部を委託する場合<br>
+                            　2.合併その他の事由による事業の承継に伴って個人情報が提供される場合<br>
+                            　3.個人情報を特定の者との間で共同して利用する場合であって，その旨並びに共同して利用される個人情報の項目，共同して利用する者の範囲，利用する者の利用目的および当該個人情報の管理について責任を有する者の氏名または名称について，あらかじめ本人に通知し，または本人が容易に知り得る状態に置いた場合
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">第6条（個人情報の開示）</h4>
+                        <p class="faq-answer">
+                            1.当農園は，本人から個人情報の開示を求められたときは，本人に対し，遅滞なくこれを開示します。ただし，開示することにより次のいずれかに該当する場合は，その全部または一部を表示しないこともあり，表示しない決定をした場合には，その旨を遅滞なく通知します。なお，個人情報の開示に際しては，1件あたり1,000円の手数料を申し受けます。<br>
+                            　1.本人または第三者の生命，身体，財産その他の権利利益を害するおそれがある場合<br>
+                            　2.当農園の業務の適正な実施に著しい支障を及ぼすおそれがある場合<br>
+                            　3.その他法令に違反することとなる場合<br>
+                            2.前項の定めにかかわらず，履歴情報および特性情報などの個人情報以外の情報については，原則として開示いたしません。
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">第7条（個人情報の訂正および削除）</h4>
+                        <p class="faq-answer">
+                            1.ユーザーは，当農園の保有する自己の個人情報が誤った情報である場合には，当農園が定める手続きにより，当農園に対して個人情報の訂正，追加または削除（以下，「訂正等」といいます。）を請求することができます。<br>
+                            2.当農園は，ユーザーから前項の請求を受けてその請求に応じる必要があると判断した場合には，遅滞なく，当該個人情報の訂正等を行うものとします。<br>
+                            3.当農園は，前項の規定に基づき訂正等を行った場合，または訂正等を行わない旨の決定をしたときは遅滞なく，これをユーザーに通知します。
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">第8条（個人情報の利用停止等）</h4>
+                        <p class="faq-answer">
+                            1.当農園は，本人から，個人情報が，利用目的の範囲を超えて取り扱われているという理由，または不正の手段により取得されたものであるという理由により，その利用の停止または消去（以下，「利用停止等」といいます。）を求められた場合には，遅滞なく必要な調査を行います。<br>
+                            2.前項の調査結果に基づき，その請求に応じる必要があると判断した場合には，遅滞なく，当該個人情報の利用停止等を行います。<br>
+                            3.当農園は，前項の規定に基づき利用停止等を行った場合，または利用停止等を行わない旨の決定をしたときは，遅滞なく，これをユーザーに通知します。<br>
+                            4.前2項にかかわらず，利用停止等に多額の費用を有する場合その他利用停止等を行うことが困難な場合であって，ユーザーの権利利益を保護するために必要なこれに代わるべき措置をとれる場合は，この代替策を講じるものとします。
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">第9条（プライバシーポリシーの変更）</h4>
+                        <p class="faq-answer">
+                            1.本ポリシーの内容は，法令その他本ポリシーに別段の定めのある事項を除いて，ユーザーに通知することなく，変更することができるものとします。<br>
+                            2.当農園が別途定める場合を除いて，変更後のプライバシーポリシーは，本ウェブサイトに掲載したときから効力を生じるものとします。
+                        </p>
+                    </div>
+
+                    <div class="faq-item" style="border-bottom: none;">
+                        <h4 class="faq-question">第10条（お問い合わせ窓口）</h4>
+                        <p class="faq-answer">本ポリシーに関するお問い合わせは，CONTACTよりお問い合わせくださいませ。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Specified Commercial Transactions Modal -->
+    <div class="recipe-modal" id="sectaModal">
+        <div class="recipe-close" id="sectaCloseBtn"><span></span><span></span></div>
+        <div class="recipe-content-wrapper">
+            <div class="recipe-detail-content">
+                <div class="recipe-header">
+                    <span class="recipe-tag">LEGAL</span>
+                    <h2 class="recipe-title">特定商取引法に基づく表記</h2>
+                </div>
+
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <h4 class="faq-question">販売事業者</h4>
+                        <p class="faq-answer">米良氣農園</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">販売責任者</h4>
+                        <p class="faq-answer">安原 直昭</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">所在地</h4>
+                        <p class="faq-answer">〒509-8231 岐阜県恵那市中野方町4163</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">電話番号</h4>
+                        <p class="faq-answer">※請求があった場合に遅滞なく開示いたします</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">メールアドレス</h4>
+                        <p class="faq-answer">meraki.noen@gmail.com</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">お問い合わせ方法</h4>
+                        <p class="faq-answer">お問い合わせページまたはメールにてご連絡ください</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">販売価格</h4>
+                        <p class="faq-answer">商品ページに税込価格を表示しています</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">商品代金以外に必要な料金</h4>
+                        <p class="faq-answer">
+                            送料：送料は商品の重量および配送地域により異なります。<br>
+                            ご注文内容確認後、正式な送料をご案内いたします。<br><br>
+                        <table style="width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid #ddd; text-align: left;">
+                                    <th style="padding: 10px 5px;">重量</th>
+                                    <th style="padding: 10px 5px;">送料目安</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td style="padding: 10px 5px;">100g</td>
+                                    <td style="padding: 10px 5px;">250〜500円（クリックポスト等）</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td style="padding: 10px 5px;">200g</td>
+                                    <td style="padding: 10px 5px;">300〜600円（クリックポスト等）</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td style="padding: 10px 5px;">2kg</td>
+                                    <td style="padding: 10px 5px;">900〜1,300円（宅配便）</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td style="padding: 10px 5px;">5kg</td>
+                                    <td style="padding: 10px 5px;">1,000〜1,600円（宅配便）</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td style="padding: 10px 5px;">10kg</td>
+                                    <td style="padding: 10px 5px;">1,200〜2,000円（宅配便）</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <span
+                            style="font-size: 0.8rem; color: #999; margin-top: 10px; display: block;">※できるだけ送料が安くなる方法でお送りします</span>
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">支払方法</h4>
+                        <p class="faq-answer">
+                            コンビニ決済 / あと払い（ペイディ） / PayPal / 銀行振込 / キャリア決済 / 楽天ペイ
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">支払時期</h4>
+                        <p class="faq-answer">
+                            ・銀行振込：注文後3日以内にお支払い<br>
+                            ・クレジットカード：注文時に決済（※現在準備中です）
+                        </p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">商品の引渡時期</h4>
+                        <p class="faq-answer">ご注文日から7営業日以内に発送いたします</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4 class="faq-question">商品の引渡方法</h4>
+                        <p class="faq-answer">宅配便にて発送いたします</p>
+                    </div>
+
+                    <div class="faq-item" style="border-bottom: none;">
+                        <h4 class="faq-question">返品・交換・キャンセルについて</h4>
+                        <p class="faq-answer">
+                            食品のため、お客様都合による返品・交換はお受けしておりません。<br>
+                            商品に不備があった場合は、商品到着後3日以内にご連絡ください。確認のうえ対応いたします。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/cinematic.js?v=2.1"></script>
 </body>
 
 </html>
