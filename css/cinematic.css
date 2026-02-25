@@ -1562,6 +1562,45 @@ body {
     opacity: 0.6;
 }
 
+@media (max-width: 768px) {
+
+    /* Hide the PC horizontal menu bar */
+    .global-header {
+        display: none !important;
+    }
+
+    /* Make hamburger menu sticky/fixed on mobile */
+    .hamburger-btn {
+        position: fixed;
+        top: 25px;
+        right: 25px;
+        margin-top: 0;
+        z-index: 2100;
+        /* Stays above everything */
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+        padding: 10px;
+        border-radius: 50%;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .hamburger-btn span {
+        position: relative;
+        top: auto !important;
+        margin: 3px 0;
+    }
+
+    /* Ensure hamburger lines are visible on light backgrounds when scrolled */
+    .hamburger-btn.scrolled span {
+        background: var(--c-text);
+    }
+}
+
 .dict-modal {
     position: fixed;
     top: 0;

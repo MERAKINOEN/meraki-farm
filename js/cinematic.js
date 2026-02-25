@@ -708,4 +708,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+    // Toggle scrolled class for mobile hamburger visibility
+    window.addEventListener('scroll', () => {
+        const hamburger = document.querySelector('.hamburger-btn');
+        if (hamburger && isMobile) {
+            if (window.scrollY > 100) {
+                hamburger.classList.add('scrolled');
+            } else {
+                hamburger.classList.remove('scrolled');
+            }
+        }
+    });
 });
