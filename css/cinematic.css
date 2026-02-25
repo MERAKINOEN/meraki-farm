@@ -1621,6 +1621,19 @@ body {
     .cinematic-form {
         gap: 20px;
     }
+
+    /* Stack footer links vertically */
+    .footer-links {
+        flex-direction: column;
+        gap: 15px;
+        /* Adjust gap for vertical stacking */
+        text-align: center;
+    }
+
+    /* Hide separators on mobile */
+    .footer-links .separator {
+        display: none;
+    }
 }
 
 .dict-modal {
