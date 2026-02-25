@@ -1599,6 +1599,28 @@ body {
     .hamburger-btn.scrolled span {
         background: var(--c-text);
     }
+
+    /* Reduce title size to fit mobile screens better */
+    .section-title {
+        font-size: clamp(1.8rem, 6vw, 2.8rem) !important;
+        margin-bottom: 0px;
+    }
+
+    /* Increase horizontal padding for Information section */
+    .farm-info {
+        padding: 0 10% !important;
+    }
+
+    /* Increase horizontal padding for Contact section */
+    .contact-section-container {
+        padding: 0 8% !important;
+        margin-top: 50px;
+    }
+
+    /* Consistent padding for forms */
+    .cinematic-form {
+        gap: 20px;
+    }
 }
 
 .dict-modal {
